@@ -2,10 +2,17 @@
 
 namespace App\Controllers;
 
-class HomeController
+use App\Core\Controller;
+
+class HomeController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index()
     {
-        echo 'home->index';
+        return $this->render("Home/index");
     }
 }

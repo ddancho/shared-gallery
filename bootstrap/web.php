@@ -5,6 +5,10 @@ use App\Core\Application;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$app = new Application(dirname(__DIR__));
+$config = [
+    'assets' => "http://localhost/shared-gallery/src/assets",
+];
+
+$app = new Application(dirname(__DIR__), $config);
 
 $app->router->get('/', [HomeController::class, 'index']);

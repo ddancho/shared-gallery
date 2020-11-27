@@ -53,5 +53,4 @@ class Router
         $this->response->setStatusCode(404);
         throw new NotFoundException();
     }
-
 }
