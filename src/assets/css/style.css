@@ -207,7 +207,7 @@ body {
 }
 
 .container__description-error {
-  display: none;
+  visibility: hidden;
   font-size: 0.8rem;
   color: red;
 }

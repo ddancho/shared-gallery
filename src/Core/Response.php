@@ -13,4 +13,10 @@ class Response
     {
         \header('Location: ' . $url);
     }
+
+    public function json($response)
+    {
+        header('Content-Type: application/json');
+        return \json_encode($response);
+    }
 }

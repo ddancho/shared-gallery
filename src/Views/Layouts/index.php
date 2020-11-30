@@ -18,13 +18,13 @@ use App\Core\Application;
   <body>
     <div class="navbar">
       <ul>
-        <?php if (!is_null(Application::$app->session->get('user'))): ?>
-          <li><a href="/gallery">Shared Gallery</a></li>
-          <li><a id="logout" href="/logoutUser">Logout</a></li>
+        <?php if (!is_null(Application::$app->session->get('userId'))): ?>
+          <li><a href="<?php echo Application::$base; ?>/gallery">Shared Gallery</a></li>
+          <li><a id="logout" href="<?php echo Application::$base; ?>/logout">Logout</a></li>
         <?php else: ?>
-          <li><a href="/index">Shared Gallery</a></li>
-          <li><a href="/login">Login</a></li>
-          <li><a href="/register">Register</a></li>
+          <li><a href="<?php echo Application::$base; ?>/">Shared Gallery</a></li>
+          <li><a href="<?php echo Application::$base; ?>/login">Login</a></li>
+          <li><a href="<?php echo Application::$base; ?>/register">Register</a></li>
         <?php endif;?>
       </ul>
     </div>
