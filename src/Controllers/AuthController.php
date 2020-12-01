@@ -38,9 +38,11 @@ class AuthController extends Controller
             $user = new User('login');
             $user->loadModelData($request->getBody());
             if ($user->validateModelData(['email', 'password']) && $user->login()) {
+                $this->app()->session->set('user', $user->record);
+
                 return $response->json([
                     'msg' => 'Thanks for login',
-                    'location' => Application::$base . "/",
+                    'location' => Application::$base . "/gallery",
                 ]);
             }
 
@@ -48,5 +50,25 @@ class AuthController extends Controller
         }
 
         return $this->render("Auth/login");
+    }
+
+    public function logout($request, $response)
+    {
+        if ($request->isPost()) {
+            $logout = $request->getBody()['logout'] === 'true' ? true : false;
+
+            if ($logout) {
+                $this->app()->session->remove('user');
+                return $response->json([
+                    'home' => Application::$base . "/",
+                ]);
+            }
+
+            return $response->json([
+                'gallery' => Application::$base . "/gallery",
+            ]);
+        }
+
+        return $this->render("Auth/logout");
     }
 }

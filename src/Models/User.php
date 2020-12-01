@@ -11,6 +11,8 @@ class User extends Model
     protected $password = '';
     protected $confirm = '';
 
+    public $record;
+
     private $rule;
     private $ruleOverride = [
         'register' => [self::RULE_REQUIRED, self::RULE_EMAIL, self::RULE_UNIQUE],
@@ -24,13 +26,13 @@ class User extends Model
 
     public function login()
     {
-        $record = $this->find('email', \PDO::PARAM_STR, $this->email, true);
-        if (!$record) {
+        $this->record = $this->find('email', \PDO::PARAM_STR, $this->email, true);
+        if (!$this->record) {
             $this->addError('email', self::RULE_EMAIL);
             $this->addError('password', self::RULE_PASSWORD);
         }
 
-        if (isset($record['password']) && !\password_verify($this->password, $record['password'])) {
+        if (isset($this->record['password']) && !\password_verify($this->password, $this->record['password'])) {
             $this->addError('password', self::RULE_PASSWORD);
         }
 

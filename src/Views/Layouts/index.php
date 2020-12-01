@@ -18,7 +18,7 @@ use App\Core\Application;
   <body>
     <div class="navbar">
       <ul>
-        <?php if (!is_null(Application::$app->session->get('userId'))): ?>
+        <?php if (!is_null(Application::$app->session->get('user'))): ?>
           <li><a href="<?php echo Application::$base; ?>/gallery">Shared Gallery</a></li>
           <li><a id="logout" href="<?php echo Application::$base; ?>/logout">Logout</a></li>
         <?php else: ?>

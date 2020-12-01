@@ -8,7 +8,9 @@
   --clr-inputhover: #fce4ec;
   --clr-inputfocus: #f48fb1;
   --clr-btn-primary: #8b0834;
+  --clr-btn-secondery: #27ce72;
   --clr-btn-primaryhover: #640726;
+  --clr-btn-seconderyhover: #18884a;
   --clr-sidebar-background: #e1e5ee;
   --clr-sidebar-background-hover: #c5d1ee;
   --clr-sidebar-shadow: #a10c2d;
@@ -32,21 +34,6 @@
 body {
   font-family: 'Montserrat', sans-serif;
   background-color: var(--clr-body-background);
-}
-
-.grid__container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas: 'sidebar gallery';
-}
-
-.content1 {
-  grid-area: sidebar;
-}
-
-.content2 {
-  grid-area: gallery;
 }
 
 .nav {
@@ -292,4 +279,22 @@ body {
 
 .container__btn-submit:hover {
   background-color: var(--clr-btn-primaryhover);
+}
+
+.container__btn-submit-cancel {
+  margin: 1rem auto;
+  border: none;
+  background: var(--clr-btn-secondery);
+  color: var(--clr-white);
+  border-radius: var(--radius);
+  padding: 1rem;
+  font-family: inherit;
+  font-weight: bold;
+  width: 16rem;
+  cursor: pointer;
+  transition: all 250ms ease-in;
+}
+
+.container__btn-submit-cancel:hover {
+  background-color: var(--clr-btn-seconderyhover);
 }

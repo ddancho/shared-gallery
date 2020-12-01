@@ -15,4 +15,9 @@ class Controller
     {
         return $this->view->render($view, $params);
     }
+
+    protected function app()
+    {
+        return Application::$app;
+    }
 }

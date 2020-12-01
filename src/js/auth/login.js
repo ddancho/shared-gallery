@@ -51,9 +51,9 @@ document.getElementById('form').addEventListener('submit', (e) => {
         document.getElementById('login_success').innerText = msg;
         let btn = document.querySelector('.container__btn-submit');
         btn.disabled = true;
-        // window.setTimeout(function () {
-        //   redirect(location);
-        // }, 2 * 1000);
+        window.setTimeout(function () {
+          redirect(location);
+        }, 2 * 1000);
       }
     },
     error: (res) => {
