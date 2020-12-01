@@ -3,7 +3,7 @@
   --clr-font02: #464d50;
   --clr-body-background: #37474f;
   --clr-input-background: #faf2f6;
-  --clr-background03: #232e33;
+  --clr-success-background: rgb(185, 241, 225);
   --clr-navbar-background: #192024;
   --clr-inputhover: #fce4ec;
   --clr-inputfocus: #f48fb1;
@@ -189,7 +189,7 @@ body {
 
 .container {
   margin: 2rem auto;
-  padding: 2rem;
+  padding: 1rem;
   width: 26rem;
   border-radius: var(--radius);
   background-color: var(--clr-white);
@@ -210,6 +210,15 @@ body {
   visibility: hidden;
   font-size: 0.8rem;
   color: red;
+}
+
+.container__description-success {
+  visibility: hidden;
+  font-size: 1rem;
+  padding: 0.5rem;
+  background-color: var(--clr-success-background);
+  border-radius: var(--radius);
+  text-align: center;
 }
 
 .container__form-group {

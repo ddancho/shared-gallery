@@ -49,6 +49,7 @@ use App\Core\Application;
     </div>
     <div class="container__form-group">
       <input type="submit" class="container__btn-submit" value="Submit" />
+      <p id="register_success" class="container__description-success">0</p>
     </div>
   </form>
 </div>

@@ -8,6 +8,7 @@ abstract class Model extends DbModel
     public const RULE_EMAIL = 'email';
     public const RULE_UNIQUE = 'unique';
     public const RULE_MATCH = 'match';
+    public const RULE_PASSWORD = 'password';
 
     public $errors = [];
 
@@ -22,9 +23,15 @@ abstract class Model extends DbModel
         }
     }
 
-    public function validateModelData()
+    public function validateModelData($params = [])
     {
-        $modelRules = $this->rules();
+        if (empty($params)) {
+            $modelRules = $this->rules();
+        } else {
+            foreach ($params as $key) {
+                $modelRules[$key] = $this->rules()[$key];
+            }
+        }
 
         foreach ($modelRules as $property => $rules) {
             if (\property_exists($this, $property)) {
@@ -64,7 +71,7 @@ abstract class Model extends DbModel
         return empty($this->errors);
     }
 
-    private function addError($property, $rule, $params = [])
+    protected function addError($property, $rule, $params = [])
     {
         $message = $this->errorMessages()[$rule];
 
@@ -82,6 +89,7 @@ abstract class Model extends DbModel
             self::RULE_EMAIL => 'Email is not valid',
             self::RULE_MATCH => 'Field input must be as {match}',
             self::RULE_UNIQUE => 'Record with this {unique} input already exists',
+            self::RULE_PASSWORD => 'Password is not valid',
         ];
     }
 }
