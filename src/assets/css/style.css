@@ -11,6 +11,7 @@
   --clr-btn-secondery: #27ce72;
   --clr-btn-primaryhover: #640726;
   --clr-btn-seconderyhover: #18884a;
+  --clr-btn-disabled: #333e44;
   --clr-sidebar-background: #e1e5ee;
   --clr-sidebar-background-hover: #c5d1ee;
   --clr-sidebar-shadow: #a10c2d;
@@ -220,6 +221,17 @@ body {
   margin: 1rem 0;
 }
 
+.container__form-group-fieldset {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 0px 10px;
+  font-size: 0.9rem;
+  border-radius: var(--radius);
+  border-color: var(--clr-input-background);
+}
+
 .container__form-label {
   font-size: 0.9rem;
   margin-bottom: 0.3rem;
@@ -281,6 +293,10 @@ body {
   background-color: var(--clr-btn-primaryhover);
 }
 
+.container__btn-submit:disabled {
+  background-color: var(--clr-btn-disabled);
+}
+
 .container__btn-submit-cancel {
   margin: 1rem auto;
   border: none;
@@ -297,4 +313,17 @@ body {
 
 .container__btn-submit-cancel:hover {
   background-color: var(--clr-btn-seconderyhover);
+}
+
+.gallery {
+  display: flex;
+}
+
+.gallery__content {
+  background-color: var(--clr-body-background);
+  margin-left: auto;
+  margin-right: auto;
+  width: 100vw;
+  height: calc(100vh - 3.2rem);
+  justify-content: center;
 }

@@ -49,8 +49,7 @@ document.getElementById('form').addEventListener('submit', (e) => {
           .getElementById('login_success')
           .style.setProperty('visibility', 'visible');
         document.getElementById('login_success').innerText = msg;
-        let btn = document.querySelector('.container__btn-submit');
-        btn.disabled = true;
+        document.querySelector('.container__btn-submit').disabled = true;
         window.setTimeout(function () {
           redirect(location);
         }, 2 * 1000);

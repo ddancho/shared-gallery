@@ -10,6 +10,11 @@ abstract class Model extends DbModel
     public const RULE_MATCH = 'match';
     public const RULE_PASSWORD = 'password';
 
+    public const RULE_IMAGE_SIZE_ZERO = 'size_zero';
+    public const RULE_IMAGE_SIZE_LIMIT = 'size_limit';
+    public const RULE_IMAGE_TYPE = 'image_type';
+    public const RULE_IMAGE_UPLOAD_ERROR = 'upload_error';
+
     public $errors = [];
 
     abstract public function rules();
@@ -38,7 +43,7 @@ abstract class Model extends DbModel
                 $value = $this->{$property};
 
                 foreach ($rules as $rule) {
-                    $ruleType = $rule;
+                    $ruleType = $rule; //type,error,size
 
                     if (\is_array($rule)) {
                         $ruleType = $rule[0];
@@ -62,6 +67,28 @@ abstract class Model extends DbModel
 
                     if ($ruleType === self::RULE_MATCH && $value !== $this->{$rule['match']}) {
                         $this->addError($property, $ruleType, ['match' => $rule['match']]);
+                    }
+
+                    if ($ruleType === self::RULE_IMAGE_SIZE_ZERO && $value['size'] == 0) {
+                        $this->addError($property, $ruleType);
+                    }
+
+                    if ($ruleType === self::RULE_IMAGE_SIZE_LIMIT && $value['size'] > 5000000000) {
+                        $this->addError($property, $ruleType);
+                    }
+
+                    if ($ruleType === self::RULE_IMAGE_TYPE) {
+                        $allowedExt = ['jpg', 'jpeg', 'png'];
+                        $type = \strtolower($value['type']);
+                        $type = \explode('/', $type)[1];
+                        if (!\in_array($type, $allowedExt)) {
+                            $this->addError($property, $ruleType, ['type' => $type]);
+                        }
+
+                    }
+
+                    if ($ruleType === self::RULE_IMAGE_UPLOAD_ERROR && $value['error'] !== UPLOAD_ERR_OK) {
+                        $this->addError($property, $ruleType, ['error' => $value['error']]);
                     }
                 }
 
@@ -90,6 +117,10 @@ abstract class Model extends DbModel
             self::RULE_MATCH => 'Field input must be as {match}',
             self::RULE_UNIQUE => 'Record with this {unique} input already exists',
             self::RULE_PASSWORD => 'Password is not valid',
+            self::RULE_IMAGE_SIZE_ZERO => 'Image size is zero, nothing to upload',
+            self::RULE_IMAGE_SIZE_LIMIT => 'Image size exceeds upload limit of 5MB',
+            self::RULE_IMAGE_TYPE => 'Image type must be JPEG, or PNG and not: {type}',
+            self::RULE_IMAGE_UPLOAD_ERROR => 'Error uploading file to database: {error}',
         ];
     }
 }

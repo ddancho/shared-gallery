@@ -85,7 +85,7 @@ class Migration
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 migration VARCHAR(255),
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                ) ENGINE=INNODB;";
+                ) ENGINE=INNODB DEFAULT CHARSET=utf8;";
             $this->pdo->exec($sql);
         } catch (\PDOexception $e) {
             die($this->log($e->getMessage()));

@@ -33,3 +33,5 @@ $app->router->get('/logout', [AuthController::class, 'logout']);
 $app->router->post('/logout', [AuthController::class, 'logout']);
 
 $app->router->get('/gallery', [GalleryController::class, 'gallery']);
+$app->router->post('/gallery', [GalleryController::class, 'gallery']);
+$app->router->post('/upload', [GalleryController::class, 'upload']);

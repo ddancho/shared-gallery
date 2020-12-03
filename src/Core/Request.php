@@ -51,4 +51,17 @@ class Request
 
         return $body;
     }
+
+    public function getFile($file)
+    {
+        $info = [];
+
+        if (!empty($_FILES[$file])) {
+            foreach (array_keys($_FILES[$file]) as $key) {
+                $info[$key] = $_FILES[$file][$key];
+            }
+        }
+
+        return $info;
+    }
 }
