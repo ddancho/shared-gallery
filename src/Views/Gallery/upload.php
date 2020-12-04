@@ -24,8 +24,9 @@
         <label for="private" class="container__form-label-checkbox">Private</label>
     </fieldset>
     <div class="container__form-group">
-      <label for="progress_bar" class="container__form-label">Progress Bar</label>
-      <div id="progress_bar">
+      <div class="container__form-progress_bar">
+        <span id="progress_bar_fill" class="container__form-progress_bar-fill">
+        </span>
       </div>
     </div>
     <div class="container__form-group">

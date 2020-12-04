@@ -49,6 +49,7 @@ class Image extends Model
             'user_id' => \PDO::PARAM_INT,
             'image_name' => \PDO::PARAM_STR,
             'image_ext' => \PDO::PARAM_STR,
+            'image_status' => \PDO::PARAM_INT,
             'image_data' => \PDO::PARAM_LOB,
         ];
     }

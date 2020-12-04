@@ -5,6 +5,10 @@ function onUpload(action) {
   uploadForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
+    let pbFill = document.getElementById('progress_bar_fill');
+    pbFill.style.width = 0;
+    pbFill.innerText = '';
+
     document
       .getElementById('upload_success')
       .style.setProperty('visibility', 'hidden');
@@ -52,6 +56,16 @@ function onUpload(action) {
         } else {
           console.log('Ajax error');
         }
+      }
+    };
+
+    xmlhttp.onprogress = function (e) {
+      let percent;
+
+      if (e.lengthComputable === true) {
+        percent = Math.round((e.loaded / e.total) * 100);
+        pbFill.style.width = percent + '%';
+        pbFill.innerText = percent + '%';
       }
     };
 
