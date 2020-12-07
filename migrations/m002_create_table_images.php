@@ -17,6 +17,7 @@ class m002_create_table_images
                 user_id INT NOT NULL,
                 image_name VARCHAR(255) NOT NULL,
                 image_ext VARCHAR(255) NOT NULL,
+                image_comment VARCHAR(255) NOT NULL,
                 image_status INT NOT NULL DEFAULT 0,
                 image_data LONGBLOB NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

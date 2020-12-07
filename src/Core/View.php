@@ -14,14 +14,8 @@ class View
         return \str_replace('{{content}}', $viewContent, $layoutContent);
     }
 
-    private function renderView($view, $params)
+    public function renderView($view, $params)
     {
-        if (!empty($params)) {
-            foreach ($params as $key => $value) {
-                $$key = $value;
-            }
-        }
-
         \ob_start();
 
         include_once Application::$ROOT_DIR . "/src/Views/{$view}.php";

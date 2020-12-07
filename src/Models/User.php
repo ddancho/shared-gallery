@@ -26,7 +26,7 @@ class User extends Model
 
     public function login()
     {
-        $this->record = $this->find('email', \PDO::PARAM_STR, $this->email, true);
+        $this->record = $this->get('email', \PDO::PARAM_STR, $this->email, true);
         if (!$this->record) {
             $this->addError('email', self::RULE_EMAIL);
             $this->addError('password', self::RULE_PASSWORD);

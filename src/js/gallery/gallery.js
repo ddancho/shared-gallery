@@ -1,4 +1,5 @@
 import { onUpload } from './upload.js';
+import { onPublic } from './public.js';
 
 if (document.readyState === 'loading') {
 } else {
@@ -9,7 +10,7 @@ if (document.readyState === 'loading') {
     element.focus();
 
     let action = element.getAttribute('action');
-    request('public', action);
+    request(action, 'GET', false);
   });
 }
 
@@ -35,54 +36,47 @@ document.getElementById('public').addEventListener('click', function (e) {
   e.preventDefault();
 
   let action = this.getAttribute('action');
-  request('public', action);
+  request(action, 'GET', false);
 });
 
 document.getElementById('private').addEventListener('click', function (e) {
   e.preventDefault();
 
   let action = this.getAttribute('action');
-  request('private', action);
+  request(action, 'GET', false);
 });
 
 document.getElementById('upload').addEventListener('click', function (e) {
   e.preventDefault();
 
   let action = this.getAttribute('action');
-  request('upload', action);
+  request(action, 'GET', false);
 });
 
-const redirect = (location) => (window.location = location);
+const request = (action, type, processData) => {
+  app.request(
+    {
+      type,
+      action,
+      success: (res) => {
+        const { page, view } = res;
+        document.getElementById('gallery_content').innerHTML = view;
 
-const request = (page, action) => {
-  app.request({
-    data: {
-      page,
+        switch (page) {
+          case 'public':
+            onPublic();
+            break;
+          case 'private':
+            break;
+          case 'upload':
+            onUpload(action);
+            break;
+        }
+      },
+      error: (res) => {
+        alert(res);
+      },
     },
-    type: 'POST',
-    action,
-    success: (res) => {
-      const { page, actionAttr, content } = res;
-      let gallery = document.getElementById('gallery_content');
-      gallery.innerHTML = content;
-
-      switch (page) {
-        case 'public':
-          console.log('public page');
-          break;
-        case 'private':
-          console.log('private page');
-          break;
-        case 'upload':
-          console.log('upload page');
-          onUpload(actionAttr);
-          break;
-        default:
-          break;
-      }
-    },
-    error: (res) => {
-      alert(res);
-    },
-  });
+    processData
+  );
 };

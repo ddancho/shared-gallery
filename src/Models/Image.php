@@ -6,20 +6,25 @@ use App\Core\Model;
 
 class Image extends Model
 {
-
     protected $user_id = null;
     protected $image_name = '';
     protected $image_ext = '';
+    protected $image_comment = '';
     protected $image_status = null;
     protected $image_data = '';
 
     public $file = [];
+    public const IMAGE_PUBLIC = 0;
+    public const IMAGE_PRIVATE = 1;
 
-    public function __construct($user, $status, $file)
+    public function __construct($params = [])
     {
-        $this->user_id = intval($user['id']);
-        $this->image_status = $status;
-        $this->file = $file;
+        if (!empty($params)) {
+            $this->user_id = intval($params['user']['id']);
+            $this->image_status = $params['body']['visibility'] === 'public' ? self::IMAGE_PUBLIC : self::IMAGE_PRIVATE;
+            $this->image_comment = $params['body']['comment'] ?? '';
+            $this->file = $params['file'];
+        }
     }
 
     public function insert()
@@ -29,6 +34,25 @@ class Image extends Model
         $this->image_data = \base64_encode(\file_get_contents(\addslashes($this->file['tmp_name'])));
 
         return parent::insert();
+    }
+
+    public function getAll($params = [])
+    {
+        $params = [
+            'query' => "SELECT *, (SELECT name FROM users u WHERE i.user_id = u.id) AS uploader FROM images i WHERE i.image_status = :attr",
+            'value' => Image::IMAGE_PUBLIC,
+            'type' => \PDO::PARAM_STR,
+        ];
+
+        $records = parent::getAll($params);
+
+        foreach ($records as $key => $record) {
+            $records[$key]['src'] = 'data:image/' . $record['image_ext'] . ';base64,' . $record['image_data'];
+            unset($records[$key]['image_ext']);
+            unset($records[$key]['image_data']);
+        }
+
+        return $records;
     }
 
     public function rules()
@@ -49,6 +73,7 @@ class Image extends Model
             'user_id' => \PDO::PARAM_INT,
             'image_name' => \PDO::PARAM_STR,
             'image_ext' => \PDO::PARAM_STR,
+            'image_comment' => \PDO::PARAM_STR,
             'image_status' => \PDO::PARAM_INT,
             'image_data' => \PDO::PARAM_LOB,
         ];

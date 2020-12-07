@@ -19,7 +19,7 @@ use App\Core\Application;
         <a
           id="public"
           href="javascript:void(0)"
-          action="<?php echo Application::$base; ?>/gallery"
+          action="<?php echo Application::$base; ?>/publicGallery"
         >
           <svg viewBox="0 0 24 24" fill="black" width="48px" height="48px">
             <path d="M0 0h24v24H0z" fill="none" />
@@ -34,7 +34,7 @@ use App\Core\Application;
         <a
           id="private"
           href="javascript:void(0)"
-          action="<?php echo Application::$base; ?>/gallery"
+          action="<?php echo Application::$base; ?>/privateGallery"
         >
           <svg viewBox="0 0 24 24" fill="black" width="48px" height="48px">
             <path d="M0 0h24v24H0z" fill="none" />
@@ -49,7 +49,7 @@ use App\Core\Application;
         <a
           id="upload"
           href="javascript:void(0)"
-          action="<?php echo Application::$base; ?>/gallery"
+          action="<?php echo Application::$base; ?>/upload"
         >
           <svg
             enable-background="new 0 0 24 24"
@@ -82,3 +82,5 @@ use App\Core\Application;
 <script defer type="module" src="<?php echo Application::$js; ?>/gallery/gallery.js" type="text/javascript"></script>
 
 <script defer type="module" src="<?php echo Application::$js; ?>/gallery/upload.js" type="text/javascript"></script>
+
+<script defer type="module" src="<?php echo Application::$js; ?>/gallery/public.js" type="text/javascript"></script>

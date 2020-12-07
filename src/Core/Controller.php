@@ -16,6 +16,11 @@ class Controller
         return $this->view->render($view, $params);
     }
 
+    protected function renderView($view, $params = [])
+    {
+        return $this->view->renderView($view, $params);
+    }
+
     protected function app()
     {
         return Application::$app;

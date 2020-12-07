@@ -39,7 +39,50 @@ abstract class DbModel
             $stmt = self::prepare($sql);
             $stmt->bindParam(":attr", $value, $type);
             $stmt->execute();
+
+            return $stmt->rowCount() > 0 ? true : false;
+
+        } catch (\PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function get($column, $type, $value, $cs = false)
+    {
+        $table = $this->table();
+        $CS = $cs === true ? 'BINARY' : '';
+
+        try {
+            $sql = "SELECT * FROM $table WHERE $column = " . $CS . " :attr LIMIT 1";
+            $stmt = self::prepare($sql);
+            $stmt->bindParam(":attr", $value, $type);
+            $stmt->execute();
+
             return $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        } catch (\PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function getAll($params)
+    {
+        $sql = '';
+
+        if (isset($params['query'])) {
+            $sql = $params['query'];
+        } else {
+            $table = $this->table();
+            $sql = "SELECT * FROM $table WHERE " . $params['column'] . " = :attr";
+        }
+
+        try {
+            $stmt = self::prepare($sql);
+            $stmt->bindParam(":attr", $params['value'], $params['type']);
+            $stmt->execute();
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
         } catch (\PDOException $e) {
             die($e->getMessage());
         }
