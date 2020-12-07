@@ -36,11 +36,11 @@ class Image extends Model
         return parent::insert();
     }
 
-    public function getAll($params = [])
+    public function getAll($options = [])
     {
         $params = [
             'query' => "SELECT *, (SELECT name FROM users u WHERE i.user_id = u.id) AS uploader FROM images i WHERE i.image_status = :attr",
-            'value' => Image::IMAGE_PUBLIC,
+            'value' => $options['value'],
             'type' => \PDO::PARAM_STR,
         ];
 

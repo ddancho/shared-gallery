@@ -84,3 +84,5 @@ use App\Core\Application;
 <script defer type="module" src="<?php echo Application::$js; ?>/gallery/upload.js" type="text/javascript"></script>
 
 <script defer type="module" src="<?php echo Application::$js; ?>/gallery/public.js" type="text/javascript"></script>
+
+<script defer type="module" src="<?php echo Application::$js; ?>/gallery/private.js" type="text/javascript"></script>

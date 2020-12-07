@@ -48,7 +48,7 @@ class GalleryController extends Controller
     {
         if ($request->isGet()) {
             $image = new Image();
-            $records = $image->getAll();
+            $records = $image->getAll(['value' => Image::IMAGE_PUBLIC]);
 
             return $response->json([
                 'page' => 'public',
@@ -60,10 +60,12 @@ class GalleryController extends Controller
     public function privateGallery($request, $response)
     {
         if ($request->isGet()) {
+            $image = new Image();
+            $records = $image->getAll(['value' => Image::IMAGE_PRIVATE]);
 
             return $response->json([
                 'page' => 'private',
-                'view' => $this->renderView("Gallery/private"),
+                'view' => $this->renderView("Gallery/private", $records),
             ]);
         }
     }
