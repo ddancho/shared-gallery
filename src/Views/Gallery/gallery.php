@@ -4,17 +4,19 @@ use App\Core\Application;
 
 <div class="gallery">
   <nav class="nav">
-    <svg
-      class="nav__expand"
-      viewBox="0 0 256 512"
-      width="100"
-      title="Expand Arrow"
-    >
-      <path
-        d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"
-      />
-    </svg>
     <ul class="nav__list">
+      <li>
+        <svg
+          class="nav__expand"
+          viewBox="0 0 256 512"
+          width="100"
+          title="Expand Arrow"
+        >
+          <path
+            d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"
+          />
+        </svg>
+      </li>
       <li class="nav__listitem nav__listitem-active">
         <a
           id="public"
@@ -77,12 +79,36 @@ use App\Core\Application;
   <div id="gallery_content" class="gallery__content"></div>
 </div>
 
-<script defer src="<?php echo Application::$js; ?>/request.js" type="text/javascript"></script>
+<script
+  defer
+  src="<?php echo Application::$js; ?>/request.js"
+  type="text/javascript"
+></script>
 
-<script defer type="module" src="<?php echo Application::$js; ?>/gallery/gallery.js" type="text/javascript"></script>
+<script
+  defer
+  type="module"
+  src="<?php echo Application::$js; ?>/gallery/gallery.js"
+  type="text/javascript"
+></script>
 
-<script defer type="module" src="<?php echo Application::$js; ?>/gallery/upload.js" type="text/javascript"></script>
+<script
+  defer
+  type="module"
+  src="<?php echo Application::$js; ?>/gallery/upload.js"
+  type="text/javascript"
+></script>
 
-<script defer type="module" src="<?php echo Application::$js; ?>/gallery/public.js" type="text/javascript"></script>
+<script
+  defer
+  type="module"
+  src="<?php echo Application::$js; ?>/gallery/public.js"
+  type="text/javascript"
+></script>
 
-<script defer type="module" src="<?php echo Application::$js; ?>/gallery/private.js" type="text/javascript"></script>
+<script
+  defer
+  type="module"
+  src="<?php echo Application::$js; ?>/gallery/private.js"
+  type="text/javascript"
+></script>

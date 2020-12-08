@@ -5,6 +5,7 @@
   --clr-input-background: #faf2f6;
   --clr-success-background: rgb(185, 241, 225);
   --clr-navbar-background: #192024;
+  --clr-private-background: #cad1f5;
   --clr-inputhover: #fce4ec;
   --clr-inputfocus: #f48fb1;
   --clr-btn-primary: #8b0834;
@@ -38,11 +39,17 @@ body {
   overflow-x: hidden;
 }
 
+.solo {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .nav {
-  position: absolute;
+  grid-area: sidebar;
   background-color: var(--clr-sidebar-background);
   box-shadow: 0px 0px 20px var(--clr-sidebar-shadow2);
-  height: calc(100vh - 3.2rem);
 }
 
 .nav__list {
@@ -56,10 +63,6 @@ body {
   cursor: pointer;
   border-left: 6px solid transparent;
   transition: all 200ms ease-in;
-}
-
-.nav__listitem:first-child {
-  margin-top: 5rem;
 }
 
 .nav__listitem:hover {
@@ -94,7 +97,10 @@ body {
 }
 
 .nav__expand {
-  position: absolute;
+  display: flex;
+  margin-left: auto;
+  position: relative;
+  margin-top: 2rem;
   width: 2rem;
   height: 2rem;
   right: -1rem;
@@ -119,10 +125,6 @@ body {
 
 .nav-closed .nav__listitem a p {
   display: none;
-}
-
-.nav-closed .nav__listitem:first-child {
-  margin-top: 5rem;
 }
 
 .navbar {
@@ -178,11 +180,19 @@ body {
 }
 
 .container {
-  margin: 2rem auto;
+  margin: 1rem;
   padding: 1rem;
   width: 26rem;
   border-radius: var(--radius);
   background-color: var(--clr-white);
+}
+
+.container__private {
+  margin: 1rem;
+  padding: 1rem;
+  width: 26rem;
+  border-radius: var(--radius);
+  background-color: var(--clr-private-background);
 }
 
 .container__title {
@@ -339,17 +349,27 @@ body {
 }
 
 .gallery {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1.7fr;
+  grid-template-areas: 'sidebar main';
 }
 
 .gallery__content {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: var(--clr-body-background);
-  margin-left: 10%;
-  margin-right: auto;
-  width: 100vw;
-  height: calc(100vh - 3.2rem);
+}
+
+.gallery__content-private {
+  grid-area: main;
+  display: flex;
+  flex-direction: row;
   justify-content: center;
-  overflow: inherit;
+  flex-wrap: wrap;
+  background-color: var(--clr-body-background);
+  margin-left: 10px;
 }
 
 .card {

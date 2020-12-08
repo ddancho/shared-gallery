@@ -42,6 +42,7 @@ class GalleryController extends Controller
 
         return $response->json([
             'page' => 'upload',
+            'records' => true,
             'view' => file_get_contents(Application::$ROOT_DIR . "/src/Views/Gallery/upload.php"),
         ]);
     }
@@ -50,10 +51,11 @@ class GalleryController extends Controller
     {
         if ($request->isGet()) {
             $image = new Image();
-            $records = $image->getAll(['value' => Image::IMAGE_PUBLIC]);
+            $records = $image->getAllPublic();
 
             return $response->json([
                 'page' => 'public',
+                'records' => empty($records),
                 'view' => $this->renderView("Gallery/public", $records),
             ]);
         }
@@ -63,10 +65,11 @@ class GalleryController extends Controller
     {
         if ($request->isGet()) {
             $image = new Image();
-            $records = $image->getAll(['value' => Image::IMAGE_PRIVATE]);
+            $records = $image->getAllPrivate(['user' => $this->app()->session->get('user')]);
 
             return $response->json([
                 'page' => 'private',
+                'records' => empty($records),
                 'view' => $this->renderView("Gallery/private", $records),
             ]);
         }

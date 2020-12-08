@@ -60,17 +60,37 @@ const request = (action, type, processData) => {
       type,
       action,
       success: (res) => {
-        const { page, view } = res;
-        document.getElementById('gallery_content').innerHTML = view;
+        const { page, records, view } = res;
+
+        let galleryContent = document.getElementById('gallery_content');
+        galleryContent.innerHTML = view;
 
         switch (page) {
           case 'public':
+            toggleClass(
+              records,
+              galleryContent,
+              'gallery__content-private',
+              'gallery__content'
+            );
             onPublic();
             break;
           case 'private':
+            toggleClass(
+              records,
+              galleryContent,
+              'gallery__content',
+              'gallery__content-private'
+            );
             onPrivate();
             break;
           case 'upload':
+            toggleClass(
+              records,
+              galleryContent,
+              'gallery__content-private',
+              'gallery__content'
+            );
             onUpload(action);
             break;
         }
@@ -81,4 +101,20 @@ const request = (action, type, processData) => {
     },
     processData
   );
+};
+
+const toggleClass = (anyRecords, element, value, newValue) => {
+  if (!anyRecords) {
+    if (element.classList.value === value) {
+      element.classList.remove(value);
+      element.classList.add(newValue);
+    }
+    //document.querySelector('.nav').style.removeProperty('height');
+  } else {
+    if (element.classList.value === 'gallery__content-private') {
+      element.classList.remove('gallery__content-private');
+      element.classList.add('gallery__content');
+    }
+    //document.querySelector('.nav').style.setProperty('height', 'calc(100vh - 3.2rem)');
+  }
 };

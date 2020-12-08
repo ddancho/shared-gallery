@@ -36,17 +36,37 @@ class Image extends Model
         return parent::insert();
     }
 
-    public function getAll($options = [])
+    public function getAllPublic($options = [])
     {
         $params = [
             'query' => "SELECT *, (SELECT name FROM users u WHERE i.user_id = u.id) AS uploader FROM images i WHERE i.image_status = :attr",
-            'value' => $options['value'],
+            'value' => Image::IMAGE_PUBLIC,
             'type' => \PDO::PARAM_STR,
         ];
 
         $records = parent::getAll($params);
 
         foreach ($records as $key => $record) {
+            $records[$key]['src'] = 'data:image/' . $record['image_ext'] . ';base64,' . $record['image_data'];
+            unset($records[$key]['image_ext']);
+            unset($records[$key]['image_data']);
+        }
+
+        return $records;
+    }
+
+    public function getAllPrivate($options = [])
+    {
+        $params = [
+            'query' => "SELECT * FROM images i WHERE i.user_id = :attr",
+            'value' => $options['user']['id'],
+            'type' => \PDO::PARAM_STR,
+        ];
+
+        $records = parent::getAll($params);
+
+        foreach ($records as $key => $record) {
+            $records[$key]['class'] = intval($record['image_status']) === Image::IMAGE_PUBLIC ? 'container' : 'container__private';
             $records[$key]['src'] = 'data:image/' . $record['image_ext'] . ';base64,' . $record['image_data'];
             unset($records[$key]['image_ext']);
             unset($records[$key]['image_data']);
