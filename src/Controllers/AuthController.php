@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Application;
 use App\Core\Controller;
+use App\Core\Middlewares\AuthMiddleware;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -11,6 +12,7 @@ class AuthController extends Controller
     public function __construct()
     {
         parent::__construct();
+        $this->registerMiddleware(new AuthMiddleware(['register', 'login'], []));
     }
 
     public function register($request, $response)

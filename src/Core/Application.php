@@ -10,11 +10,14 @@ class Application
     public static $js;
     public static $base;
 
-    public $request;
-    public $response;
     public $router;
     public $session;
     public $database;
+
+    private $request;
+    private $response;
+    private $view;
+    private $errors = [403, 404];
 
     public function __construct($rootDir, $config)
     {
@@ -27,8 +30,11 @@ class Application
 
         $this->database = new Database($config['db']);
         $this->session = new Session();
+
+        $this->view = new View();
         $this->request = new Request($config['base']);
         $this->response = new Response();
+
         $this->router = new Router($this->request, $this->response);
     }
 
@@ -37,8 +43,8 @@ class Application
         try {
             echo $this->router->resolveRoute();
         } catch (\Exception $e) {
-            echo $e->getMessage();
-            exit;
+            $this->response->setStatusCode($e->getCode());
+            echo $this->view->renderView("Errors/_error", ['error' => $e->getMessage()]);
         }
     }
 }

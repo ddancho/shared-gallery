@@ -9,8 +9,8 @@ class Router
     private $routes = [];
     private $request;
     private $response;
-    private $controller;
-    private $action;
+
+    public $controller;
 
     public function __construct($request, $response)
     {
@@ -35,7 +35,6 @@ class Router
         $callback = $this->routes[$method][$path] ?? false;
 
         if (!$callback) {
-            $this->response->setStatusCode(404);
             throw new NotFoundException();
         }
 
@@ -45,12 +44,16 @@ class Router
         }
 
         if (\is_array($callback) && class_exists($callback[0]) && \method_exists($callback[0], $callback[1])) {
-            $controller = new $callback[0];
-            $action = $callback[1];
-            return \call_user_func([$controller, $action], $this->request, $this->response);
+            $this->controller = new $callback[0];
+            $this->controller->action = $callback[1];
+
+            foreach ($this->controller->middlewares as $middleware) {
+                $middleware->execute();
+            }
+
+            return \call_user_func([$this->controller, $this->controller->action], $this->request, $this->response);
         }
 
-        $this->response->setStatusCode(404);
         throw new NotFoundException();
     }
 }

@@ -4,6 +4,9 @@ namespace App\Core;
 
 class Controller
 {
+    public $action;
+    public $middlewares = [];
+
     protected $view;
 
     protected function __construct()
@@ -24,5 +27,10 @@ class Controller
     protected function app()
     {
         return Application::$app;
+    }
+
+    public function registerMiddleware($middleware)
+    {
+        $this->middlewares[] = $middleware;
     }
 }

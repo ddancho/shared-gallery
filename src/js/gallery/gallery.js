@@ -1,5 +1,6 @@
 import { onUpload } from './upload.js';
 import { onPublic } from './public.js';
+import { onPrivate } from './private.js';
 
 if (document.readyState === 'loading') {
 } else {
@@ -67,6 +68,7 @@ const request = (action, type, processData) => {
             onPublic();
             break;
           case 'private':
+            onPrivate();
             break;
           case 'upload':
             onUpload(action);
