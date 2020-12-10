@@ -16,6 +16,7 @@ class Image extends Model
     public $file = [];
     public const IMAGE_PUBLIC = 0;
     public const IMAGE_PRIVATE = 1;
+    private const IMAGE_SCALE_WIDTH = 500;
 
     public function __construct($params = [])
     {
@@ -47,7 +48,8 @@ class Image extends Model
         $records = parent::getAll($params);
 
         foreach ($records as $key => $record) {
-            $records[$key]['src'] = 'data:image/' . $record['image_ext'] . ';base64,' . $record['image_data'];
+            $img = $this->scaleImage($record['image_data'], $record['image_ext'], Image::IMAGE_SCALE_WIDTH);
+            $records[$key]['src'] = 'data:image/' . $record['image_ext'] . ';base64,' . $img;
             unset($records[$key]['image_ext']);
             unset($records[$key]['image_data']);
         }
@@ -66,13 +68,20 @@ class Image extends Model
         $records = parent::getAll($params);
 
         foreach ($records as $key => $record) {
+            $img = $this->scaleImage($record['image_data'], $record['image_ext'], Image::IMAGE_SCALE_WIDTH);
             $records[$key]['class'] = intval($record['image_status']) === Image::IMAGE_PUBLIC ? 'container' : 'container__private';
-            $records[$key]['src'] = 'data:image/' . $record['image_ext'] . ';base64,' . $record['image_data'];
+            $records[$key]['src'] = 'data:image/' . $record['image_ext'] . ';base64,' . $img;
             unset($records[$key]['image_ext']);
             unset($records[$key]['image_data']);
         }
 
         return $records;
+    }
+
+    public function getImage($id)
+    {
+        $record = parent::get('id', \PDO::PARAM_INT, $id);
+        return 'data:image/' . $record['image_ext'] . ';base64,' . $record['image_data'];
     }
 
     public function rules()
@@ -97,5 +106,16 @@ class Image extends Model
             'image_status' => \PDO::PARAM_INT,
             'image_data' => \PDO::PARAM_LOB,
         ];
+    }
+
+    private function scaleImage($imageData, $imageType, $width)
+    {
+        $image = \imagescale(\imagecreatefromstring(\base64_decode($imageData)), $width);
+
+        \ob_start();
+        $imageType === 'png' ? \imagepng($image) : \imagejpeg($image);
+        $data = ob_get_clean();
+
+        return \base64_encode($data);
     }
 }

@@ -11,7 +11,7 @@ if (empty($params)) {
       <div class="container">
           <div class="card">
             <p class="card__uploadby">{$record['uploader']}  {$record['created_at']}</p>
-            <img src="{$record['src']}" alt="background image 01" class="card__image" />
+            <img src="{$record['src']}" id="{$record['id']}" alt="Image Resource Not Found" class="card__image" />
             <h2 class="card__title">{$record['image_name']}</h2>
             <p class="card__comment">{$record['image_comment']}</p>
           </div>

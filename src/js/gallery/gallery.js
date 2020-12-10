@@ -77,20 +77,24 @@ document.getElementById('north_arrow').addEventListener('click', function (e) {
   }
 });
 
+const fixGalleryViewType = () => {
+  let gallery = document.getElementById('gallery_content');
+  let viewType = document.getElementById('view_type');
+  let options = Array.from(viewType.options);
+
+  let view = Array.from(gallery.classList).find(
+    (view) => view === viewType.value
+  );
+
+  if (view === undefined) {
+    let classToRemove = options.find((view) => view.value != viewType.value);
+    gallery.classList.remove(classToRemove.value);
+    gallery.classList.add(viewType.value);
+  }
+};
+
 document.getElementById('public').addEventListener('click', function (e) {
   e.preventDefault();
-
-  if (document.getElementById('view_type').disabled) {
-    document.getElementById('view_type').disabled = false;
-    document.getElementById('sort_type').disabled = false;
-  }
-
-  let sort = document.getElementById('sort_type');
-  let options = Array.from(sort.options);
-  let option = options.find((option) => option.value === 'uploader');
-  if (option === undefined) {
-    sort.add(new Option('Uploader', 'uploader'));
-  }
 
   let action = this.getAttribute('action');
   request(action, 'GET', false);
@@ -99,40 +103,12 @@ document.getElementById('public').addEventListener('click', function (e) {
 document.getElementById('private').addEventListener('click', function (e) {
   e.preventDefault();
 
-  if (document.getElementById('view_type').disabled) {
-    document.getElementById('view_type').disabled = false;
-    document.getElementById('sort_type').disabled = false;
-  }
-
-  let sort = document.getElementById('sort_type');
-  let options = Array.from(sort.options);
-  let option = options.find((option) => option.value === 'uploader');
-  if (option) {
-    option.remove();
-  }
-
   let action = this.getAttribute('action');
   request(action, 'GET', false);
 });
 
 document.getElementById('upload').addEventListener('click', function (e) {
   e.preventDefault();
-
-  document.getElementById('view_type').disabled = true;
-  document.getElementById('sort_type').disabled = true;
-
-  let viewColumn = Array.from(
-    document.getElementById('gallery_content').classList
-  ).find((element) => element === 'gallery__content-column');
-
-  if (viewColumn === undefined) {
-    document
-      .getElementById('gallery_content')
-      .classList.remove('gallery__content-grid');
-    document
-      .getElementById('gallery_content')
-      .classList.add('gallery__content-column');
-  }
 
   let action = this.getAttribute('action');
   request(action, 'GET', false);
@@ -151,10 +127,10 @@ const request = (action, type, processData) => {
 
         switch (page) {
           case 'public':
-            onPublic();
+            onPublic(action, fixGalleryViewType);
             break;
           case 'private':
-            onPrivate();
+            onPrivate(action, fixGalleryViewType);
             break;
           case 'upload':
             onUpload(action);

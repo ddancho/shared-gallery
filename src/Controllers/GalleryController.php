@@ -71,4 +71,16 @@ class GalleryController extends Controller
             ]);
         }
     }
+
+    public function getImage($request, $response)
+    {
+        if ($request->isPost()) {
+            $image = new Image();
+            $record = $image->getImage(intval($request->getBody()['id']));
+
+            return $response->json([
+                'src' => $record,
+            ]);
+        }
+    }
 }

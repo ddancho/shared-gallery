@@ -124,6 +124,21 @@ use App\Core\Application;
         </svg>
       </div>
     </div>
+    <div class="nav__select">
+      <div class="nav__select-container">
+        <label for="img_per_page_type" class="nav__select-label"
+          >Images Per Page</label
+        >
+        <select name="views" id="img_per_page_type" class="nav__select-input">
+          <option value="img_3">3</option>
+          <option value="img_10">10</option>
+          <option value="img_20">20</option>
+          <option value="img_30">30</option>
+          <option value="img_40">40</option>
+          <option value="img_50">50</option>
+        </select>
+      </div>
+    </div>
   </nav>
   <div id="gallery_content" class="gallery__content"></div>
 </div>

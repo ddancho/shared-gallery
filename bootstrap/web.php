@@ -39,3 +39,5 @@ $app->router->post('/upload', [GalleryController::class, 'upload']);
 
 $app->router->get('/publicGallery', [GalleryController::class, 'publicGallery']);
 $app->router->get('/privateGallery', [GalleryController::class, 'privateGallery']);
+
+$app->router->post('/getImage', [GalleryController::class, 'getImage']);

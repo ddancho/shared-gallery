@@ -2,7 +2,7 @@
   <h2 class="container__title">Upload Image</h2>
   <form id="uploadForm" action="" method="POST" enctype="multipart/form-data">
     <div class="container__form-group">
-      <label for="file" class="container__form-label">Upload</label>
+      <label for="file" class="container__form-label">Image</label>
       <input
         type="file"
         id="file"

@@ -1,4 +1,21 @@
 function onUpload(action) {
+  document.getElementById('view_type').disabled = true;
+  document.getElementById('sort_type').disabled = true;
+  document.getElementById('img_per_page_type').disabled = true;
+
+  let viewColumn = Array.from(
+    document.getElementById('gallery_content').classList
+  ).find((element) => element === 'gallery__content-column');
+
+  if (viewColumn === undefined) {
+    document
+      .getElementById('gallery_content')
+      .classList.remove('gallery__content-grid');
+    document
+      .getElementById('gallery_content')
+      .classList.add('gallery__content-column');
+  }
+
   let uploadForm = document.getElementById('uploadForm');
   uploadForm.setAttribute('action', action);
 
