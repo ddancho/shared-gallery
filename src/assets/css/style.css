@@ -46,10 +46,56 @@ body {
   align-items: center;
 }
 
+.nav__select {
+  display: flex;
+  margin: 0.5rem;
+}
+
+.nav__select-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  margin: 15px 2px 2px 5px;
+  cursor: pointer;
+}
+
+.nav__select-arrow-active {
+  border: 1px solid var(--clr-btn-primaryhover);
+}
+
+.nav__select-arrow svg:hover {
+  fill: var(--clr-btn-primaryhover);
+}
+
+.nav__select-container {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--clr-sidebar-background);
+}
+
+.nav__select-label {
+  color: var(--clr-font01);
+  font-size: 0.9rem;
+  text-align: start;
+  margin-left: 0.5rem;
+  margin-right: 0.2rem;
+}
+
+.nav__select-input {
+  margin: 0.5rem auto 1rem 0rem;
+  padding: 0.2rem;
+  background-color: var(--clr-body-background);
+  color: var(--clr-white);
+  border-radius: var(--radius);
+  width: 5.5rem;
+}
+
 .nav {
   grid-area: sidebar;
   background-color: var(--clr-sidebar-background);
   box-shadow: 0px 0px 20px var(--clr-sidebar-shadow2);
+  height: calc(100vh - 3.2rem);
 }
 
 .nav__list {
@@ -143,6 +189,17 @@ body {
   overflow: hidden;
 }
 
+.navbar ul li {
+  margin-left: 1rem;
+}
+
+.navbar ul li p {
+  padding: 3px;
+  text-decoration: none;
+  color: var(--clr-white);
+  border: 1px solid var(--clr-white);
+}
+
 .navbar ul li:first-child {
   margin-right: auto;
   margin-left: 2rem;
@@ -183,6 +240,8 @@ body {
   margin: 1rem;
   padding: 1rem;
   width: 26rem;
+  max-height: min-content;
+  height: min-content;
   border-radius: var(--radius);
   background-color: var(--clr-white);
 }
@@ -191,6 +250,8 @@ body {
   margin: 1rem;
   padding: 1rem;
   width: 26rem;
+  max-height: min-content;
+  height: min-content;
   border-radius: var(--radius);
   background-color: var(--clr-private-background);
 }
@@ -357,19 +418,20 @@ body {
 .gallery__content {
   grid-area: main;
   display: flex;
+}
+
+.gallery__content-column {
   flex-direction: column;
   align-items: center;
   background-color: var(--clr-body-background);
 }
 
-.gallery__content-private {
-  grid-area: main;
-  display: flex;
+.gallery__content-grid {
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  background-color: var(--clr-body-background);
   margin-left: 10px;
+  background-color: var(--clr-body-background);
 }
 
 .card {

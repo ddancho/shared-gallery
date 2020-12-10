@@ -42,7 +42,6 @@ class GalleryController extends Controller
 
         return $response->json([
             'page' => 'upload',
-            'records' => true,
             'view' => file_get_contents(Application::$ROOT_DIR . "/src/Views/Gallery/upload.php"),
         ]);
     }
@@ -55,7 +54,6 @@ class GalleryController extends Controller
 
             return $response->json([
                 'page' => 'public',
-                'records' => empty($records),
                 'view' => $this->renderView("Gallery/public", $records),
             ]);
         }
@@ -69,7 +67,6 @@ class GalleryController extends Controller
 
             return $response->json([
                 'page' => 'private',
-                'records' => empty($records),
                 'view' => $this->renderView("Gallery/private", $records),
             ]);
         }

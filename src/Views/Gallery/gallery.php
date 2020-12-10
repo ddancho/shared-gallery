@@ -75,6 +75,55 @@ use App\Core\Application;
         </a>
       </li>
     </ul>
+    <div class="nav__select">
+      <div class="nav__select-container">
+        <label for="view_type" class="nav__select-label">Choose a view</label>
+        <select name="views" id="view_type" class="nav__select-input">
+          <option value="gallery__content-column">Column</option>
+          <option value="gallery__content-grid">Grid</option>
+        </select>
+      </div>
+    </div>
+    <div class="nav__select">
+      <div class="nav__select-container">
+        <label for="sort_type" class="nav__select-label">Sort by</label>
+        <select name="sorts" id="sort_type" class="nav__select-input">
+          <option value="date">Date</option>
+        </select>
+      </div>
+      <div class="nav__select-arrow">
+        <svg
+          id="south_arrow"
+          value="asc"
+          enable-background="new 0 0 24 24"
+          viewBox="0 0 24 24"
+          fill="black"
+          width="18px"
+          height="18px"
+        >
+          <rect fill="none" height="24" width="24" />
+          <path
+            d="M19,15l-1.41-1.41L13,18.17V2H11v16.17l-4.59-4.59L5,15l7,7L19,15z"
+          />
+        </svg>
+      </div>
+      <div class="nav__select-arrow">
+        <svg
+          id="north_arrow"
+          value="desc"
+          enable-background="new 0 0 24 24"
+          viewBox="0 0 24 24"
+          fill="black"
+          width="18px"
+          height="18px"
+        >
+          <rect fill="none" height="24" width="24" />
+          <path
+            d="M5,9l1.41,1.41L11,5.83V22H13V5.83l4.59,4.59L19,9l-7-7L5,9z"
+          />
+        </svg>
+      </div>
+    </div>
   </nav>
   <div id="gallery_content" class="gallery__content"></div>
 </div>

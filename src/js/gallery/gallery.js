@@ -7,6 +7,16 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', (e) => {
     e.preventDefault();
 
+    let view = document.getElementById('view_type');
+    document.getElementById('gallery_content').classList.add(view.value);
+
+    let sort = document.getElementById('sort_type');
+    sort.add(new Option('Uploader', 'uploader'));
+
+    document
+      .getElementById('south_arrow')
+      .classList.toggle('nav__select-arrow-active');
+
     let element = document.getElementById('public');
     element.focus();
 
@@ -33,8 +43,54 @@ const setItemActive = (item) => {
   item.classList.add('nav__listitem-active');
 };
 
+document.getElementById('view_type').addEventListener('change', function (e) {
+  e.preventDefault();
+
+  let classToAdd = this.value;
+  let classToRemove = Array.from(this.options).find(
+    (option) => option.value !== classToAdd
+  ).value;
+
+  document.getElementById('gallery_content').classList.remove(classToRemove);
+  document.getElementById('gallery_content').classList.add(classToAdd);
+});
+
+document.getElementById('south_arrow').addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (this.classList.length === 0) {
+    document
+      .getElementById('north_arrow')
+      .classList.toggle('nav__select-arrow-active');
+    this.classList.toggle('nav__select-arrow-active');
+  }
+});
+
+document.getElementById('north_arrow').addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (this.classList.length === 0) {
+    document
+      .getElementById('south_arrow')
+      .classList.toggle('nav__select-arrow-active');
+    this.classList.toggle('nav__select-arrow-active');
+  }
+});
+
 document.getElementById('public').addEventListener('click', function (e) {
   e.preventDefault();
+
+  if (document.getElementById('view_type').disabled) {
+    document.getElementById('view_type').disabled = false;
+    document.getElementById('sort_type').disabled = false;
+  }
+
+  let sort = document.getElementById('sort_type');
+  let options = Array.from(sort.options);
+  let option = options.find((option) => option.value === 'uploader');
+  if (option === undefined) {
+    sort.add(new Option('Uploader', 'uploader'));
+  }
 
   let action = this.getAttribute('action');
   request(action, 'GET', false);
@@ -43,12 +99,40 @@ document.getElementById('public').addEventListener('click', function (e) {
 document.getElementById('private').addEventListener('click', function (e) {
   e.preventDefault();
 
+  if (document.getElementById('view_type').disabled) {
+    document.getElementById('view_type').disabled = false;
+    document.getElementById('sort_type').disabled = false;
+  }
+
+  let sort = document.getElementById('sort_type');
+  let options = Array.from(sort.options);
+  let option = options.find((option) => option.value === 'uploader');
+  if (option) {
+    option.remove();
+  }
+
   let action = this.getAttribute('action');
   request(action, 'GET', false);
 });
 
 document.getElementById('upload').addEventListener('click', function (e) {
   e.preventDefault();
+
+  document.getElementById('view_type').disabled = true;
+  document.getElementById('sort_type').disabled = true;
+
+  let viewColumn = Array.from(
+    document.getElementById('gallery_content').classList
+  ).find((element) => element === 'gallery__content-column');
+
+  if (viewColumn === undefined) {
+    document
+      .getElementById('gallery_content')
+      .classList.remove('gallery__content-grid');
+    document
+      .getElementById('gallery_content')
+      .classList.add('gallery__content-column');
+  }
 
   let action = this.getAttribute('action');
   request(action, 'GET', false);
@@ -60,37 +144,19 @@ const request = (action, type, processData) => {
       type,
       action,
       success: (res) => {
-        const { page, records, view } = res;
+        const { page, view } = res;
 
         let galleryContent = document.getElementById('gallery_content');
         galleryContent.innerHTML = view;
 
         switch (page) {
           case 'public':
-            toggleClass(
-              records,
-              galleryContent,
-              'gallery__content-private',
-              'gallery__content'
-            );
             onPublic();
             break;
           case 'private':
-            toggleClass(
-              records,
-              galleryContent,
-              'gallery__content',
-              'gallery__content-private'
-            );
             onPrivate();
             break;
           case 'upload':
-            toggleClass(
-              records,
-              galleryContent,
-              'gallery__content-private',
-              'gallery__content'
-            );
             onUpload(action);
             break;
         }
@@ -101,20 +167,4 @@ const request = (action, type, processData) => {
     },
     processData
   );
-};
-
-const toggleClass = (anyRecords, element, value, newValue) => {
-  if (!anyRecords) {
-    if (element.classList.value === value) {
-      element.classList.remove(value);
-      element.classList.add(newValue);
-    }
-    //document.querySelector('.nav').style.removeProperty('height');
-  } else {
-    if (element.classList.value === 'gallery__content-private') {
-      element.classList.remove('gallery__content-private');
-      element.classList.add('gallery__content');
-    }
-    //document.querySelector('.nav').style.setProperty('height', 'calc(100vh - 3.2rem)');
-  }
 };
