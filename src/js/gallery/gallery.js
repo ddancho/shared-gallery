@@ -1,6 +1,12 @@
 import { onUpload } from './upload.js';
 import { onPublic } from './public.js';
 import { onPrivate } from './private.js';
+import {
+  fixGalleryViewType,
+  simulateMouseClick,
+  getSortByValue,
+  getSortByDirection,
+} from './helpers.js';
 
 if (document.readyState === 'loading') {
 } else {
@@ -20,8 +26,11 @@ if (document.readyState === 'loading') {
     let element = document.getElementById('public');
     element.focus();
 
+    let sortBy = getSortByValue();
+    let direction = getSortByDirection();
     let action = element.getAttribute('action');
-    request(action, 'GET', false);
+
+    request(action, 'POST', true, { sortBy, direction });
   });
 }
 
@@ -55,6 +64,12 @@ document.getElementById('view_type').addEventListener('change', function (e) {
   document.getElementById('gallery_content').classList.add(classToAdd);
 });
 
+document.getElementById('sort_type').addEventListener('change', function (e) {
+  e.preventDefault();
+
+  simulateMouseClick();
+});
+
 document.getElementById('south_arrow').addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -64,6 +79,8 @@ document.getElementById('south_arrow').addEventListener('click', function (e) {
       .classList.toggle('nav__select-arrow-active');
     this.classList.toggle('nav__select-arrow-active');
   }
+
+  simulateMouseClick();
 });
 
 document.getElementById('north_arrow').addEventListener('click', function (e) {
@@ -75,48 +92,40 @@ document.getElementById('north_arrow').addEventListener('click', function (e) {
       .classList.toggle('nav__select-arrow-active');
     this.classList.toggle('nav__select-arrow-active');
   }
+
+  simulateMouseClick();
 });
-
-const fixGalleryViewType = () => {
-  let gallery = document.getElementById('gallery_content');
-  let viewType = document.getElementById('view_type');
-  let options = Array.from(viewType.options);
-
-  let view = Array.from(gallery.classList).find(
-    (view) => view === viewType.value
-  );
-
-  if (view === undefined) {
-    let classToRemove = options.find((view) => view.value != viewType.value);
-    gallery.classList.remove(classToRemove.value);
-    gallery.classList.add(viewType.value);
-  }
-};
 
 document.getElementById('public').addEventListener('click', function (e) {
   e.preventDefault();
 
+  let sortBy = getSortByValue();
+  let direction = getSortByDirection();
   let action = this.getAttribute('action');
-  request(action, 'GET', false);
+
+  request(action, 'POST', true, { sortBy, direction });
 });
 
 document.getElementById('private').addEventListener('click', function (e) {
   e.preventDefault();
 
+  let direction = getSortByDirection();
   let action = this.getAttribute('action');
-  request(action, 'GET', false);
+
+  request(action, 'POST', true, { direction });
 });
 
 document.getElementById('upload').addEventListener('click', function (e) {
   e.preventDefault();
 
   let action = this.getAttribute('action');
-  request(action, 'GET', false);
+  request(action, 'GET');
 });
 
-const request = (action, type, processData) => {
+const request = (action, type, processData = false, data = null) => {
   app.request(
     {
+      data,
       type,
       action,
       success: (res) => {

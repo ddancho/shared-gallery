@@ -48,9 +48,9 @@ class GalleryController extends Controller
 
     public function publicGallery($request, $response)
     {
-        if ($request->isGet()) {
+        if ($request->isPost()) {
             $image = new Image();
-            $records = $image->getAllPublic();
+            $records = $image->getAllPublic(['sortBy' => $request->getBody()['sortBy'], 'direction' => $request->getBody()['direction']]);
 
             return $response->json([
                 'page' => 'public',
@@ -61,9 +61,9 @@ class GalleryController extends Controller
 
     public function privateGallery($request, $response)
     {
-        if ($request->isGet()) {
+        if ($request->isPost()) {
             $image = new Image();
-            $records = $image->getAllPrivate(['user' => $this->app()->session->get('user')]);
+            $records = $image->getAllPrivate(['user' => $this->app()->session->get('user'), 'direction' => $request->getBody()['direction']]);
 
             return $response->json([
                 'page' => 'private',

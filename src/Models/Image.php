@@ -39,8 +39,11 @@ class Image extends Model
 
     public function getAllPublic($options = [])
     {
+        $orderBy = $options['sortBy'] === 'date' ? 'created_at' : 'uploader';
+        $direction = $options['direction'] === 'asc' ? 'asc' : 'desc';
+
         $params = [
-            'query' => "SELECT *, (SELECT name FROM users u WHERE i.user_id = u.id) AS uploader FROM images i WHERE i.image_status = :attr",
+            'query' => "SELECT *, (SELECT name FROM users u WHERE i.user_id = u.id) AS uploader FROM images i WHERE i.image_status = :attr ORDER BY $orderBy $direction",
             'value' => Image::IMAGE_PUBLIC,
             'type' => \PDO::PARAM_STR,
         ];
@@ -59,8 +62,11 @@ class Image extends Model
 
     public function getAllPrivate($options = [])
     {
+        $orderBy = 'created_at';
+        $direction = $options['direction'] === 'asc' ? 'asc' : 'desc';
+
         $params = [
-            'query' => "SELECT * FROM images i WHERE i.user_id = :attr",
+            'query' => "SELECT * FROM images i WHERE i.user_id = :attr ORDER BY $orderBy $direction",
             'value' => $options['user']['id'],
             'type' => \PDO::PARAM_STR,
         ];

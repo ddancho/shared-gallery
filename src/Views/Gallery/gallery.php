@@ -127,7 +127,7 @@ use App\Core\Application;
     <div class="nav__select">
       <div class="nav__select-container">
         <label for="img_per_page_type" class="nav__select-label"
-          >Images Per Page</label
+          >Images per page</label
         >
         <select name="views" id="img_per_page_type" class="nav__select-input">
           <option value="img_3">3</option>
@@ -146,6 +146,13 @@ use App\Core\Application;
 <script
   defer
   src="<?php echo Application::$js; ?>/request.js"
+  type="text/javascript"
+></script>
+
+<script
+  defer
+  type="module"
+  src="<?php echo Application::$js; ?>/gallery/helpers.js"
   type="text/javascript"
 ></script>
 
