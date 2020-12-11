@@ -12,7 +12,7 @@ class AuthController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->registerMiddleware(new AuthMiddleware(['register', 'login'], []));
+        $this->registerMiddleware(new AuthMiddleware(['logout'], ['register', 'login']));
     }
 
     public function register($request, $response)
