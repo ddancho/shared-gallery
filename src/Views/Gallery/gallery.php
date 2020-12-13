@@ -127,16 +127,46 @@ use App\Core\Application;
     <div class="nav__select">
       <div class="nav__select-container">
         <label for="img_per_page_type" class="nav__select-label"
-          >Images per page</label
+          >Images Per Page</label
         >
         <select name="views" id="img_per_page_type" class="nav__select-input">
-          <option value="img_3">3</option>
-          <option value="img_10">10</option>
-          <option value="img_20">20</option>
-          <option value="img_30">30</option>
-          <option value="img_40">40</option>
-          <option value="img_50">50</option>
+          <option value="3">3</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+          <option value="40">40</option>
+          <option value="50">50</option>
         </select>
+      </div>
+      <div class="nav__select-arrow nav__select-arrow-l-r">
+        <svg
+          id="west_arrow"
+          enable-background="new 0 0 24 24"
+          viewBox="0 0 24 24"
+          fill="black"
+          width="18px"
+          height="18px"
+        >
+          <rect fill="none" height="24" width="24" />
+          <path
+            d="M9,19l1.41-1.41L5.83,13H22V11H5.83l4.59-4.59L9,5l-7,7L9,19z"
+          />
+        </svg>
+      </div>
+      <div class="nav__select-arrow nav__select-arrow-l-r">
+        <svg
+          id="east_arrow"
+          enable-background="new 0 0 24 24"
+          viewBox="0 0 24 24"
+          fill="black"
+          width="18px"
+          height="18px"
+        >
+          <rect fill="none" height="24" width="24" />
+          <path
+            d="M15,5l-1.41,1.41L18.17,11H2V13h16.17l-4.59,4.59L15,19l7-7L15,5z"
+          />
+        </svg>
       </div>
     </div>
   </nav>
@@ -153,6 +183,13 @@ use App\Core\Application;
   defer
   type="module"
   src="<?php echo Application::$js; ?>/gallery/helpers.js"
+  type="text/javascript"
+></script>
+
+<script
+  defer
+  type="module"
+  src="<?php echo Application::$js; ?>/gallery/eventControls.js"
   type="text/javascript"
 ></script>
 

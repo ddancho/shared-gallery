@@ -3,36 +3,48 @@ import { onPublic } from './public.js';
 import { onPrivate } from './private.js';
 import {
   fixGalleryViewType,
-  simulateMouseClick,
   getSortByValue,
   getSortByDirection,
+  getImagesPerPageValue,
 } from './helpers.js';
+import {
+  onViewTypeChange,
+  onSortTypeChange,
+  onAscArrowClick,
+  onDescArrowClick,
+  onPageDownArrowClick,
+  onPageUpArrowClick,
+  onImagePerPageChange,
+} from './eventControls.js';
 
-if (document.readyState === 'loading') {
-} else {
-  document.addEventListener('DOMContentLoaded', (e) => {
-    e.preventDefault();
+document.addEventListener('DOMContentLoaded', (e) => {
+  e.preventDefault();
 
-    let view = document.getElementById('view_type');
-    document.getElementById('gallery_content').classList.add(view.value);
+  let view = document.getElementById('view_type');
+  document.getElementById('gallery_content').classList.add(view.value);
 
-    let sort = document.getElementById('sort_type');
-    sort.add(new Option('Uploader', 'uploader'));
+  let sort = document.getElementById('sort_type');
+  sort.add(new Option('Uploader', 'uploader'));
 
-    document
-      .getElementById('south_arrow')
-      .classList.toggle('nav__select-arrow-active');
+  document
+    .getElementById('south_arrow')
+    .classList.toggle('nav__select-arrow-active');
 
-    let element = document.getElementById('public');
-    element.focus();
+  let element = document.getElementById('public');
+  element.focus();
 
-    let sortBy = getSortByValue();
-    let direction = getSortByDirection();
-    let action = element.getAttribute('action');
+  onPageDownArrowClick(request);
 
-    request(action, 'POST', true, { sortBy, direction });
-  });
-}
+  onPageUpArrowClick(request);
+
+  let page = 0;
+  let ipp = getImagesPerPageValue();
+  let sortBy = getSortByValue();
+  let direction = getSortByDirection();
+  let action = element.getAttribute('action');
+
+  request(action, 'POST', true, { sortBy, direction, ipp, page });
+});
 
 document.querySelector('.nav__expand').addEventListener('click', () => {
   document.querySelector('.nav').classList.toggle('nav-closed');
@@ -52,67 +64,37 @@ const setItemActive = (item) => {
   item.classList.add('nav__listitem-active');
 };
 
-document.getElementById('view_type').addEventListener('change', function (e) {
-  e.preventDefault();
+onViewTypeChange();
 
-  let classToAdd = this.value;
-  let classToRemove = Array.from(this.options).find(
-    (option) => option.value !== classToAdd
-  ).value;
+onSortTypeChange();
 
-  document.getElementById('gallery_content').classList.remove(classToRemove);
-  document.getElementById('gallery_content').classList.add(classToAdd);
-});
+onAscArrowClick();
 
-document.getElementById('sort_type').addEventListener('change', function (e) {
-  e.preventDefault();
+onDescArrowClick();
 
-  simulateMouseClick();
-});
-
-document.getElementById('south_arrow').addEventListener('click', function (e) {
-  e.preventDefault();
-
-  if (this.classList.length === 0) {
-    document
-      .getElementById('north_arrow')
-      .classList.toggle('nav__select-arrow-active');
-    this.classList.toggle('nav__select-arrow-active');
-  }
-
-  simulateMouseClick();
-});
-
-document.getElementById('north_arrow').addEventListener('click', function (e) {
-  e.preventDefault();
-
-  if (this.classList.length === 0) {
-    document
-      .getElementById('south_arrow')
-      .classList.toggle('nav__select-arrow-active');
-    this.classList.toggle('nav__select-arrow-active');
-  }
-
-  simulateMouseClick();
-});
+onImagePerPageChange();
 
 document.getElementById('public').addEventListener('click', function (e) {
   e.preventDefault();
 
+  let page = null;
+  let ipp = getImagesPerPageValue();
   let sortBy = getSortByValue();
   let direction = getSortByDirection();
   let action = this.getAttribute('action');
 
-  request(action, 'POST', true, { sortBy, direction });
+  request(action, 'POST', true, { sortBy, direction, ipp, page });
 });
 
 document.getElementById('private').addEventListener('click', function (e) {
   e.preventDefault();
 
+  let page = null;
+  let ipp = getImagesPerPageValue();
   let direction = getSortByDirection();
   let action = this.getAttribute('action');
 
-  request(action, 'POST', true, { direction });
+  request(action, 'POST', true, { direction, ipp, page });
 });
 
 document.getElementById('upload').addEventListener('click', function (e) {
@@ -129,17 +111,17 @@ const request = (action, type, processData = false, data = null) => {
       type,
       action,
       success: (res) => {
-        const { page, view } = res;
+        const { page, records, view } = res;
 
         let galleryContent = document.getElementById('gallery_content');
         galleryContent.innerHTML = view;
 
         switch (page) {
           case 'public':
-            onPublic(action, fixGalleryViewType);
+            onPublic(action, records, fixGalleryViewType);
             break;
           case 'private':
-            onPrivate(action, fixGalleryViewType);
+            onPrivate(action, records, fixGalleryViewType);
             break;
           case 'upload':
             onUpload(action);

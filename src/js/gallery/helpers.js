@@ -37,9 +37,14 @@ const getSortByDirection = () => {
   return direcElement.getAttribute('value');
 };
 
+const getImagesPerPageValue = () => {
+  return document.getElementById('img_per_page_type').value;
+};
+
 export {
   simulateMouseClick,
   fixGalleryViewType,
   getSortByValue,
   getSortByDirection,
+  getImagesPerPageValue,
 };

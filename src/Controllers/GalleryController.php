@@ -42,6 +42,7 @@ class GalleryController extends Controller
 
         return $response->json([
             'page' => 'upload',
+            'records' => null,
             'view' => file_get_contents(Application::$ROOT_DIR . "/src/Views/Gallery/upload.php"),
         ]);
     }
@@ -50,10 +51,15 @@ class GalleryController extends Controller
     {
         if ($request->isPost()) {
             $image = new Image();
-            $records = $image->getAllPublic(['sortBy' => $request->getBody()['sortBy'], 'direction' => $request->getBody()['direction']]);
+            $records = $image->getAllPublic(['sortBy' => $request->getBody()['sortBy'], 'direction' => $request->getBody()['direction'], 'ipp' => $request->getBody()['ipp'], 'page' => $request->getBody()['page']]);
+            $totalRecords = $image->getImagesCount(['column' => 'image_status', 'value' => Image::IMAGE_PUBLIC, 'type' => \PDO::PARAM_INT]);
 
             return $response->json([
                 'page' => 'public',
+                'records' => [
+                    'page' => Application::$app->session->get('publicPage'),
+                    'totalRecords' => $totalRecords,
+                ],
                 'view' => $this->renderView("Gallery/public", $records),
             ]);
         }
@@ -63,10 +69,15 @@ class GalleryController extends Controller
     {
         if ($request->isPost()) {
             $image = new Image();
-            $records = $image->getAllPrivate(['user' => $this->app()->session->get('user'), 'direction' => $request->getBody()['direction']]);
+            $records = $image->getAllPrivate(['user' => $this->app()->session->get('user'), 'direction' => $request->getBody()['direction'], 'ipp' => $request->getBody()['ipp'], 'page' => $request->getBody()['page']]);
+            $totalRecords = $image->getImagesCount(['column' => 'user_id', 'value' => intval($this->app()->session->get('user')['id']), 'type' => \PDO::PARAM_INT]);
 
             return $response->json([
                 'page' => 'private',
+                'records' => [
+                    'page' => Application::$app->session->get('privatePage'),
+                    'totalRecords' => $totalRecords,
+                ],
                 'view' => $this->renderView("Gallery/private", $records),
             ]);
         }

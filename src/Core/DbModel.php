@@ -65,20 +65,35 @@ abstract class DbModel
         }
     }
 
-    public function getAll($params)
+    public function getCount($params)
     {
-        $sql = '';
-
-        if (isset($params['query'])) {
-            $sql = $params['query'];
-        } else {
-            $table = $this->table();
-            $sql = "SELECT * FROM $table WHERE " . $params['column'] . " = :attr";
-        }
+        $sql = $params['query'];
+        unset($params['query']);
 
         try {
             $stmt = self::prepare($sql);
-            $stmt->bindParam(":attr", $params['value'], $params['type']);
+            foreach ($params as $key => $param) {
+                $stmt->bindParam(":{$key}", $param['value'], $param['type']);
+            }
+            $stmt->execute();
+
+            return $stmt->fetchColumn();
+
+        } catch (\PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function getAll($params)
+    {
+        $sql = $params['query'];
+        unset($params['query']);
+
+        try {
+            $stmt = self::prepare($sql);
+            foreach ($params as $key => $param) {
+                $stmt->bindParam(":{$key}", $param['value'], $param['type']);
+            }
             $stmt->execute();
 
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);

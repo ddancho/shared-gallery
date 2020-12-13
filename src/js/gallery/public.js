@@ -1,10 +1,37 @@
-function onPublic(orgAction, cb) {
+import { getImagesPerPageValue } from './helpers.js';
+
+function onPublic(orgAction, records, cb) {
   cb();
 
   if (document.getElementById('view_type').disabled) {
     document.getElementById('view_type').disabled = false;
     document.getElementById('sort_type').disabled = false;
     document.getElementById('img_per_page_type').disabled = false;
+  }
+
+  const { page, totalRecords } = records;
+  const ipp = getImagesPerPageValue();
+  let pageDown = document.getElementById('west_arrow');
+  let pageUp = document.getElementById('east_arrow');
+
+  if (page > 1) {
+    pageDown
+      .closest('.nav__select-arrow-l-r')
+      .style.setProperty('visibility', 'visible');
+  } else {
+    pageDown
+      .closest('.nav__select-arrow-l-r')
+      .style.setProperty('visibility', 'hidden');
+  }
+
+  if (page * ipp < totalRecords) {
+    pageUp
+      .closest('.nav__select-arrow-l-r')
+      .style.setProperty('visibility', 'visible');
+  } else {
+    pageUp
+      .closest('.nav__select-arrow-l-r')
+      .style.setProperty('visibility', 'hidden');
   }
 
   let sort = document.getElementById('sort_type');

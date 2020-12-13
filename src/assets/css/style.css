@@ -60,6 +60,12 @@ body {
   cursor: pointer;
 }
 
+.nav__select-arrow-l-r {
+  position: relative;
+  left: -3rem;
+  visibility: hidden;
+}
+
 .nav__select-arrow-active {
   border: 1px solid var(--clr-btn-primaryhover);
 }

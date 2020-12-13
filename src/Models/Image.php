@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Application;
 use App\Core\Model;
 
 class Image extends Model
@@ -42,10 +43,26 @@ class Image extends Model
         $orderBy = $options['sortBy'] === 'date' ? 'created_at' : 'uploader';
         $direction = $options['direction'] === 'asc' ? 'asc' : 'desc';
 
+        $page = $options['page'] === 'null' ? null : intval($options['page']);
+
+        $page = $this->managePage($page, 'publicPage');
+        $imagesPerPage = intval($options['ipp']);
+        $currentPage = ($page - 1) * $imagesPerPage;
+
         $params = [
-            'query' => "SELECT *, (SELECT name FROM users u WHERE i.user_id = u.id) AS uploader FROM images i WHERE i.image_status = :attr ORDER BY $orderBy $direction",
-            'value' => Image::IMAGE_PUBLIC,
-            'type' => \PDO::PARAM_STR,
+            'query' => "SELECT *, (SELECT name FROM users u WHERE i.user_id = u.id) AS uploader FROM images i WHERE i.image_status = :attr ORDER BY $orderBy $direction LIMIT :currentPage, :imagesPerPage",
+            'attr' => [
+                'value' => Image::IMAGE_PUBLIC,
+                'type' => \PDO::PARAM_INT,
+            ],
+            'currentPage' => [
+                'value' => $currentPage,
+                'type' => \PDO::PARAM_INT,
+            ],
+            'imagesPerPage' => [
+                'value' => $imagesPerPage,
+                'type' => \PDO::PARAM_INT,
+            ],
         ];
 
         $records = parent::getAll($params);
@@ -65,10 +82,26 @@ class Image extends Model
         $orderBy = 'created_at';
         $direction = $options['direction'] === 'asc' ? 'asc' : 'desc';
 
+        $page = $options['page'] === 'null' ? null : intval($options['page']);
+
+        $page = $this->managePage($page, 'privatePage');
+        $imagesPerPage = intval($options['ipp']);
+        $currentPage = ($page - 1) * $imagesPerPage;
+
         $params = [
-            'query' => "SELECT * FROM images i WHERE i.user_id = :attr ORDER BY $orderBy $direction",
-            'value' => $options['user']['id'],
-            'type' => \PDO::PARAM_STR,
+            'query' => "SELECT * FROM images i WHERE i.user_id = :attr ORDER BY $orderBy $direction LIMIT :currentPage, :imagesPerPage",
+            'attr' => [
+                'value' => $options['user']['id'],
+                'type' => \PDO::PARAM_STR,
+            ],
+            'currentPage' => [
+                'value' => $currentPage,
+                'type' => \PDO::PARAM_INT,
+            ],
+            'imagesPerPage' => [
+                'value' => $imagesPerPage,
+                'type' => \PDO::PARAM_INT,
+            ],
         ];
 
         $records = parent::getAll($params);
@@ -88,6 +121,21 @@ class Image extends Model
     {
         $record = parent::get('id', \PDO::PARAM_INT, $id);
         return 'data:image/' . $record['image_ext'] . ';base64,' . $record['image_data'];
+    }
+
+    public function getImagesCount($options)
+    {
+        $column = $options['column'];
+
+        $params = [
+            'query' => "SELECT COUNT(*) FROM images WHERE " . $column . " = :attr",
+            'attr' => [
+                'value' => $options['value'],
+                'type' => $options['type'],
+            ],
+        ];
+
+        return intval(parent::getCount($params));
     }
 
     public function rules()
@@ -112,6 +160,26 @@ class Image extends Model
             'image_status' => \PDO::PARAM_INT,
             'image_data' => \PDO::PARAM_LOB,
         ];
+    }
+
+    private function managePage($page, $key, $defaults = ['publicPage', 'privatePage'])
+    {
+        $current = Application::$app->session->get($key);
+
+        if ($page === 0) {
+            $current = 1;
+            foreach ($defaults as $param) {
+                Application::$app->session->set($param, $current);
+            }
+        } else if ($page === 1) {
+            $current += 1;
+            Application::$app->session->set($key, $current);
+        } else if ($page === -1) {
+            $current -= 1;
+            Application::$app->session->set($key, $current);
+        }
+
+        return $current;
     }
 
     private function scaleImage($imageData, $imageType, $width)

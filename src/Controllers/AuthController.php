@@ -41,6 +41,8 @@ class AuthController extends Controller
             $user->loadModelData($request->getBody());
             if ($user->validateModelData(['email', 'password']) && $user->login()) {
                 $this->app()->session->set('user', $user->record);
+                $this->app()->session->set('publicPage', 1);
+                $this->app()->session->set('privatePage', 1);
 
                 return $response->json([
                     'msg' => 'Thanks for login',
@@ -61,6 +63,8 @@ class AuthController extends Controller
 
             if ($logout) {
                 $this->app()->session->remove('user');
+                $this->app()->session->remove('publicPage');
+                $this->app()->session->remove('privatePage');
                 return $response->json([
                     'home' => Application::$base . "/",
                 ]);
