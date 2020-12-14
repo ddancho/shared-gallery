@@ -117,9 +117,16 @@ class Image extends Model
         return $records;
     }
 
-    public function getImage($id)
+    public function getImage($id, $info = false)
     {
         $record = parent::get('id', \PDO::PARAM_INT, $id);
+
+        if ($info) {
+            $record['action'] = Application::$base . '/updateImage';
+            unset($record['image_data']);
+            return $record;
+        }
+
         return 'data:image/' . $record['image_ext'] . ';base64,' . $record['image_data'];
     }
 

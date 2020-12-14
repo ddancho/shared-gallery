@@ -15,8 +15,9 @@ if (empty($params)) {
             <h2 class="card__title">{$record['image_name']}</h2>
             <p class="card__comment">{$record['image_comment']}</p>
           </div>
-          <div class="container__form-group">
-            <input type="submit" class="container__btn-submit" value="View Full Size" />
+          <div class="container__form-group-row">
+            <input type="submit" class="container__btn-submit container__btn-submit-row" name="edit" value="Edit Image Data" />
+            <input type="submit" class="container__btn-submit container__btn-submit-row" name="view" value="View Full Size" />
           </div>
       </div>
   PAGE;

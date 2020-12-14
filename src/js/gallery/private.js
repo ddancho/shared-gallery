@@ -1,6 +1,6 @@
 import { getImagesPerPageValue } from './helpers.js';
 
-function onPrivate(orgAction, records, cb) {
+function onPrivate(pageAction, records, cb) {
   cb();
 
   if (document.getElementById('view_type').disabled) {
@@ -43,7 +43,7 @@ function onPrivate(orgAction, records, cb) {
 
   let imagesPublic = document.querySelectorAll('.container');
   let imagesPrivate = document.querySelectorAll('.container__private');
-  let action = orgAction.replace('privateGallery', 'getImage');
+  let base = pageAction.replace('privateGallery', '');
 
   let images = [...imagesPublic, ...imagesPrivate];
 
@@ -52,17 +52,37 @@ function onPrivate(orgAction, records, cb) {
     if (img) {
       let id = img.getAttribute('id');
 
-      let btn = image.querySelector('.container__btn-submit');
-      btn.addEventListener('click', () => {
-        let tab = window.open();
+      let btns = Array.from(
+        image.querySelectorAll(
+          '.container__btn-submit.container__btn-submit-row'
+        )
+      );
 
-        request(action, 'POST', id, tab);
+      btns.forEach((btn) => {
+        if (btn.name === 'view') {
+          btn.addEventListener('click', () => {
+            let tab = window.open();
+            let action = base + 'getImage';
+
+            request(action, 'POST', id, tab);
+          });
+        } else {
+          // let modal = document.querySelector('.gallery__content__modal');
+          // modal.style.setProperty('visibility', 'visible');
+          // modal.style.setProperty('opacity', '1');
+          // document.body.style.setProperty('overflow-y', 'hidden');
+          btn.addEventListener('click', () => {
+            let action = base + 'updateImageView';
+
+            request(action, 'POST', id);
+          });
+        }
       });
     }
   });
 }
 
-const request = (action, type, id, tab) => {
+const request = (action, type, id, tab = null) => {
   app.request({
     data: {
       id,
@@ -70,10 +90,15 @@ const request = (action, type, id, tab) => {
     type,
     action,
     success: (res) => {
-      const { src } = res;
+      const { src, msg } = res;
+      if (msg) {
+        console.log(msg);
+      }
 
-      tab.document.body.innerHTML =
-        "<img src='" + src + '\' alt="Image Resource Not Found" >';
+      if (src) {
+        tab.document.body.innerHTML =
+          "<img src='" + src + '\' alt="Image Resource Not Found" >';
+      }
     },
     error: (res) => {
       alert(res);

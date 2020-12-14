@@ -94,4 +94,16 @@ class GalleryController extends Controller
             ]);
         }
     }
+
+    public function updateImageView($request, $response)
+    {
+        if ($request->isPost()) {
+            $image = new Image();
+            $record = $image->getImage(intval($request->getBody()['id']), true);
+
+            return $response->json([
+                'view' => $this->renderView("Gallery/update", $record),
+            ]);
+        }
+    }
 }

@@ -49,6 +49,7 @@ body {
 .nav__select {
   display: flex;
   margin: 0.5rem;
+  max-width: min-content;
 }
 
 .nav__select-arrow {
@@ -62,8 +63,8 @@ body {
 
 .nav__select-arrow-l-r {
   position: relative;
-  left: -3rem;
   visibility: hidden;
+  padding-top: 1rem;
 }
 
 .nav__select-arrow-active {
@@ -370,6 +371,11 @@ body {
   transition: all 250ms ease-in;
 }
 
+.container__btn-submit-row {
+  margin: 1rem 1rem;
+  padding: 0.5rem;
+}
+
 .container__btn-submit:hover {
   background-color: var(--clr-btn-primaryhover);
 }
@@ -438,8 +444,29 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
-  margin-left: 10px;
+  margin-left: auto;
+  margin-right: auto;
   background-color: var(--clr-body-background);
+}
+
+.gallery__content__modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  visibility: hidden;
+  z-index: 999;
+}
+
+.gallery__content__modal__container {
+  position: absolute;
+  top: 25%;
+  left: 41%;
+  border-radius: var(--radius);
+  background-color: var(--clr-white);
 }
 
 .card {
