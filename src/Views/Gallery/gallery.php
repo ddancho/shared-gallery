@@ -173,7 +173,7 @@ use App\Core\Application;
   <div id="gallery_content" class="gallery__content"></div>
 </div>
 <div class="gallery__content__modal">
-  <div class="gallery__content__modal__container">
+  <div id="gallery_content_modal" class="gallery__content__modal__container">
   </div>
 </div>
 

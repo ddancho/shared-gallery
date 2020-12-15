@@ -34,7 +34,7 @@
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   background-color: var(--clr-body-background);
   overflow-x: hidden;
 }
@@ -227,7 +227,7 @@ body {
 }
 
 .navbar ul li a::after {
-  content: '';
+  content: "";
   position: absolute;
   display: block;
   height: 0.5rem;
@@ -289,6 +289,10 @@ body {
   background-color: var(--clr-success-background);
   border-radius: var(--radius);
   text-align: center;
+}
+
+.container__description-error-m {
+  background-color: red;
 }
 
 .container__form-group {
@@ -384,6 +388,10 @@ body {
   background-color: var(--clr-btn-disabled);
 }
 
+.container__btn-submit-cancel:disabled {
+  background-color: var(--clr-btn-disabled);
+}
+
 .container__btn-submit-cancel {
   margin: 1rem auto;
   border: none;
@@ -400,6 +408,11 @@ body {
 
 .container__btn-submit-cancel:hover {
   background-color: var(--clr-btn-seconderyhover);
+}
+
+.container__btn-submit-update {
+  margin: 0.5rem auto;
+  padding: 0.5rem;
 }
 
 .container__form-progress_bar {
@@ -426,7 +439,7 @@ body {
 .gallery {
   display: grid;
   grid-template-columns: auto 1.7fr;
-  grid-template-areas: 'sidebar main';
+  grid-template-areas: "sidebar main";
 }
 
 .gallery__content {
@@ -463,7 +476,7 @@ body {
 
 .gallery__content__modal__container {
   position: absolute;
-  top: 25%;
+  top: 20%;
   left: 41%;
   border-radius: var(--radius);
   background-color: var(--clr-white);

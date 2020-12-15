@@ -1,4 +1,5 @@
 import { getImagesPerPageValue } from './helpers.js';
+import { onUpdate } from './update.js';
 
 function onPrivate(pageAction, records, cb) {
   cb();
@@ -67,10 +68,6 @@ function onPrivate(pageAction, records, cb) {
             request(action, 'POST', id, tab);
           });
         } else {
-          // let modal = document.querySelector('.gallery__content__modal');
-          // modal.style.setProperty('visibility', 'visible');
-          // modal.style.setProperty('opacity', '1');
-          // document.body.style.setProperty('overflow-y', 'hidden');
           btn.addEventListener('click', () => {
             let action = base + 'updateImageView';
 
@@ -90,9 +87,10 @@ const request = (action, type, id, tab = null) => {
     type,
     action,
     success: (res) => {
-      const { src, msg } = res;
-      if (msg) {
-        console.log(msg);
+      const { src, id, view } = res;
+
+      if (view) {
+        onUpdate(id, view);
       }
 
       if (src) {

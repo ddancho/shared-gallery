@@ -65,6 +65,33 @@ abstract class DbModel
         }
     }
 
+    public function update($params)
+    {
+        $table = $this->table();    
+        $query = "UPDATE $table SET ";
+        $where = " WHERE id = :id";
+        $values = '';
+        
+        foreach($params as $attr => $param) {
+            if($attr === "id") continue;
+            $values .= "$attr = :$attr,";           
+        }
+        $values = \rtrim($values, ",");
+        
+        $sql = $query . $values . $where;
+
+        try {
+            $stmt = self::prepare($sql);
+            foreach ($params as $key => $param) {
+                $stmt->bindParam(":{$key}", $param['value'], $param['type']);
+            }
+            return $stmt->execute();
+
+        } catch (\PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
     public function getCount($params)
     {
         $sql = $params['query'];

@@ -40,7 +40,7 @@ var app = app !== undefined ? app : {};
       }
     } else {
       xmlhttp.open(req.type, req.action);
-      xmlhttp.send();
+      req.data !== null ? xmlhttp.send(req.data) : xmlhttp.send();      
     }
   };
 

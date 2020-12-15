@@ -77,7 +77,7 @@ class Image extends Model
         return $records;
     }
 
-    public function getAllPrivate($options = [])
+    public function getAllPrivate($user, $options = [])
     {
         $orderBy = 'created_at';
         $direction = $options['direction'] === 'asc' ? 'asc' : 'desc';
@@ -91,7 +91,7 @@ class Image extends Model
         $params = [
             'query' => "SELECT * FROM images i WHERE i.user_id = :attr ORDER BY $orderBy $direction LIMIT :currentPage, :imagesPerPage",
             'attr' => [
-                'value' => $options['user']['id'],
+                'value' => $user['id'],
                 'type' => \PDO::PARAM_STR,
             ],
             'currentPage' => [
@@ -122,7 +122,7 @@ class Image extends Model
         $record = parent::get('id', \PDO::PARAM_INT, $id);
 
         if ($info) {
-            $record['action'] = Application::$base . '/updateImage';
+            $record['action'] = Application::$base . '/updateImage';            
             unset($record['image_data']);
             return $record;
         }
@@ -143,6 +143,34 @@ class Image extends Model
         ];
 
         return intval(parent::getCount($params));
+    }
+
+    public function updateImage($options)
+    {
+        $params = [
+            "id" => [
+                "value" => \intval($options['id']),
+                "type" => \PDO::PARAM_INT,
+            ],
+            "image_name" => [
+                "value" => $options['image_name'],
+                "type" => \PDO::PARAM_STR,
+            ],
+            "image_comment" => [
+                "value" => $options['image_comment'],
+                "type" => \PDO::PARAM_STR,
+            ],
+            "image_status" => [
+                "value" => $options['visibility'] === 'public' ? Image::IMAGE_PUBLIC : Image::IMAGE_PRIVATE,
+                "type" => \PDO::PARAM_INT,
+            ],
+            "updated_at" => [
+                "value" => date('Y-m-d H:i:s'),
+                "type" => \PDO::PARAM_STR,
+            ],
+        ];
+
+        return parent::update($params);
     }
 
     public function rules()

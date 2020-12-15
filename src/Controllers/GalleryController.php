@@ -51,13 +51,13 @@ class GalleryController extends Controller
     {
         if ($request->isPost()) {
             $image = new Image();
-            $records = $image->getAllPublic(['sortBy' => $request->getBody()['sortBy'], 'direction' => $request->getBody()['direction'], 'ipp' => $request->getBody()['ipp'], 'page' => $request->getBody()['page']]);
+            $records = $image->getAllPublic($request->getBody());
             $totalRecords = $image->getImagesCount(['column' => 'image_status', 'value' => Image::IMAGE_PUBLIC, 'type' => \PDO::PARAM_INT]);
 
             return $response->json([
                 'page' => 'public',
                 'records' => [
-                    'page' => Application::$app->session->get('publicPage'),
+                    'page' => $this->app()->session->get('publicPage'),
                     'totalRecords' => $totalRecords,
                 ],
                 'view' => $this->renderView("Gallery/public", $records),
@@ -69,13 +69,13 @@ class GalleryController extends Controller
     {
         if ($request->isPost()) {
             $image = new Image();
-            $records = $image->getAllPrivate(['user' => $this->app()->session->get('user'), 'direction' => $request->getBody()['direction'], 'ipp' => $request->getBody()['ipp'], 'page' => $request->getBody()['page']]);
+            $records = $image->getAllPrivate($this->app()->session->get('user'), $request->getBody());
             $totalRecords = $image->getImagesCount(['column' => 'user_id', 'value' => intval($this->app()->session->get('user')['id']), 'type' => \PDO::PARAM_INT]);
 
             return $response->json([
                 'page' => 'private',
                 'records' => [
-                    'page' => Application::$app->session->get('privatePage'),
+                    'page' => $this->app()->session->get('privatePage'),
                     'totalRecords' => $totalRecords,
                 ],
                 'view' => $this->renderView("Gallery/private", $records),
@@ -98,11 +98,25 @@ class GalleryController extends Controller
     public function updateImageView($request, $response)
     {
         if ($request->isPost()) {
+            $id = intval($request->getBody()['id']);
             $image = new Image();
-            $record = $image->getImage(intval($request->getBody()['id']), true);
+            $record = $image->getImage($id, true);            
 
             return $response->json([
+                'id' => $id,
                 'view' => $this->renderView("Gallery/update", $record),
+            ]);
+        }
+    }
+
+    public function updateImage($request, $response)
+    {
+        if ($request->isPost()) {
+            $image = new Image();
+            $isUpdated = $image->updateImage($request->getBody());            
+
+            return $response->json([
+                'isUpdated' => $isUpdated,
             ]);
         }
     }
