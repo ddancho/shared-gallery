@@ -1,6 +1,6 @@
 import { simulateMouseClick } from "./helpers.js";
 
-function onUpdate(id, view) {
+function onDelete(id, view) {
   document.body.style.setProperty("overflow-y", "hidden");
 
   let modal = document.querySelector(".gallery__content__modal");
@@ -10,7 +10,7 @@ function onUpdate(id, view) {
   document.getElementById("gallery_content_modal").innerHTML = view;
 
   document
-    .getElementById("edit_cancel")
+    .getElementById("delete_cancel")
     .addEventListener("click", function (e) {
       e.preventDefault();
 
@@ -20,11 +20,11 @@ function onUpdate(id, view) {
     });
 
   document
-    .getElementById("updateForm")
+    .getElementById("deleteForm")
     .addEventListener("submit", function (e) {
       e.preventDefault();
 
-      let form = new FormData(document.getElementById("updateForm"));
+      let form = new FormData(document.getElementById("deleteForm"));
       form.append("id", id);
       let action = this.getAttribute("action");
 
@@ -39,9 +39,9 @@ const request = (action, type, processData = false, data = null) => {
       type,
       action,
       success: (res) => {
-        const { isUpdated } = res;
+        const { isDeleted } = res;
 
-        let update = document.getElementById("update_status");
+        let delElement = document.getElementById("delete_status");
         document.querySelector(
           ".container__btn-submit.container__btn-submit-update"
         ).disabled = true;
@@ -49,22 +49,22 @@ const request = (action, type, processData = false, data = null) => {
           ".container__btn-submit-cancel.container__btn-submit-update"
         ).disabled = true;
 
-        if (isUpdated) {
-          update.style.setProperty("visibility", "visible");
-          update.innerHTML = "Image data updated successfully";
+        if (isDeleted) {
+          delElement.style.setProperty("visibility", "visible");
+          delElement.innerHTML = "Image data deleted successfully";
 
           window.setTimeout(function () {
-            onUpdateImageResponse(update, null);
+            onDeleteImageResponse(delElement, null);
           }, 3 * 1000);
 
           simulateMouseClick();
         } else {
-          update.classList.toggle("container__description-error-m");
-          update.style.setProperty("visibility", "visible");
-          update.innerHTML = "Error, please try later";
+          delElement.classList.toggle("container__description-error-m");
+          delElement.style.setProperty("visibility", "visible");
+          delElement.innerHTML = "Error, please try later";
 
           window.setTimeout(function () {
-            onUpdateImageResponse(update, "container__description-error-m");
+            onDeleteImageResponse(delElement, "container__description-error-m");
           }, 3 * 1000);
 
           simulateMouseClick();
@@ -78,12 +78,12 @@ const request = (action, type, processData = false, data = null) => {
   );
 };
 
-const onUpdateImageResponse = (update, classType) => {
+const onDeleteImageResponse = (delElement, classType) => {
   if (classType) {
-    update.classList.toggle(classType);
+    delElement.classList.toggle(classType);
   }
-  update.style.setProperty("visibility", "hidden");
-  update.innerHTML = "";
+  delElement.style.setProperty("visibility", "hidden");
+  delElement.innerHTML = "";
 
   document.querySelector(
     ".container__btn-submit.container__btn-submit-update"
@@ -101,4 +101,4 @@ const onUpdateImageResponse = (update, classType) => {
     .style.setProperty("opacity", "0");
 };
 
-export { onUpdate };
+export { onDelete };

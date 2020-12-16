@@ -100,11 +100,11 @@ class GalleryController extends Controller
         if ($request->isPost()) {
             $id = intval($request->getBody()['id']);
             $image = new Image();
-            $record = $image->getImage($id, true);            
+            $record = $image->getImage($id, true);
 
             return $response->json([
                 'id' => $id,
-                'view' => $this->renderView("Gallery/update", $record),
+                'updateImg' => $this->renderView("Gallery/update", $record),
             ]);
         }
     }
@@ -113,10 +113,32 @@ class GalleryController extends Controller
     {
         if ($request->isPost()) {
             $image = new Image();
-            $isUpdated = $image->updateImage($request->getBody());            
+            $isUpdated = $image->updateImage($request->getBody());
 
             return $response->json([
                 'isUpdated' => $isUpdated,
+            ]);
+        }
+    }
+
+    public function deleteImageView($request, $response)
+    {
+        if ($request->isPost()) {
+            return $response->json([
+                'id' => intval($request->getBody()['id']),
+                'deleteImg' => $this->renderView("Gallery/delete", ['action' => Application::$base . '/deleteImage']),
+            ]);
+        }
+    }
+
+    public function deleteImage($request, $response)
+    {
+        if ($request->isPost()) {
+            $image = new Image();
+            $isDeleted = $image->deleteImage(intval($request->getBody()['id']));
+
+            return $response->json([
+                'isDeleted' => $isDeleted,
             ]);
         }
     }

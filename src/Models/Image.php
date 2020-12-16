@@ -122,7 +122,7 @@ class Image extends Model
         $record = parent::get('id', \PDO::PARAM_INT, $id);
 
         if ($info) {
-            $record['action'] = Application::$base . '/updateImage';            
+            $record['action'] = Application::$base . '/updateImage';
             unset($record['image_data']);
             return $record;
         }
@@ -171,6 +171,11 @@ class Image extends Model
         ];
 
         return parent::update($params);
+    }
+
+    public function deleteImage($id)
+    {
+        return parent::delete('id', \PDO::PARAM_INT, $id);
     }
 
     public function rules()

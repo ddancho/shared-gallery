@@ -22,6 +22,8 @@
 
   --clr-white: #fff;
   --clr-hover: #8a6f77;
+  --clr-red: red;
+  --clr-delete: rgb(196, 5, 5);
   --radius: 0.5rem;
 }
 
@@ -279,7 +281,7 @@ body {
 .container__description-error {
   visibility: hidden;
   font-size: 0.8rem;
-  color: red;
+  color: var(--clr-red);
 }
 
 .container__description-success {
@@ -292,13 +294,20 @@ body {
 }
 
 .container__description-error-m {
-  background-color: red;
+  background-color: var(--clr-red);
+  color: var(--clr-white);
 }
 
 .container__form-group {
   display: flex;
   flex-direction: column;
   margin: 1rem 0;
+}
+
+.container__form-group-a {
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .container__form-group-row {
@@ -375,8 +384,17 @@ body {
   transition: all 250ms ease-in;
 }
 
+.container__btn-submit-delete {
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--clr-delete);
+}
+
+.container__btn-submit-delete:hover {
+  color: var(--clr-white);
+}
+
 .container__btn-submit-row {
-  margin: 1rem 1rem;
+  margin: 0.5rem 0.5rem;
   padding: 0.5rem;
 }
 
@@ -385,10 +403,6 @@ body {
 }
 
 .container__btn-submit:disabled {
-  background-color: var(--clr-btn-disabled);
-}
-
-.container__btn-submit-cancel:disabled {
   background-color: var(--clr-btn-disabled);
 }
 
@@ -408,6 +422,10 @@ body {
 
 .container__btn-submit-cancel:hover {
   background-color: var(--clr-btn-seconderyhover);
+}
+
+.container__btn-submit-cancel:disabled {
+  background-color: var(--clr-btn-disabled);
 }
 
 .container__btn-submit-update {
@@ -513,4 +531,8 @@ body {
 .card__comment {
   font-size: 0.8rem;
   color: var(--clr-font01);
+}
+
+.card__comment-hidden {
+  visibility: hidden;
 }

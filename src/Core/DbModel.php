@@ -65,33 +65,6 @@ abstract class DbModel
         }
     }
 
-    public function update($params)
-    {
-        $table = $this->table();    
-        $query = "UPDATE $table SET ";
-        $where = " WHERE id = :id";
-        $values = '';
-        
-        foreach($params as $attr => $param) {
-            if($attr === "id") continue;
-            $values .= "$attr = :$attr,";           
-        }
-        $values = \rtrim($values, ",");
-        
-        $sql = $query . $values . $where;
-
-        try {
-            $stmt = self::prepare($sql);
-            foreach ($params as $key => $param) {
-                $stmt->bindParam(":{$key}", $param['value'], $param['type']);
-            }
-            return $stmt->execute();
-
-        } catch (\PDOException $e) {
-            die($e->getMessage());
-        }
-    }
-
     public function getCount($params)
     {
         $sql = $params['query'];
@@ -124,6 +97,51 @@ abstract class DbModel
             $stmt->execute();
 
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        } catch (\PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function update($params)
+    {
+        $table = $this->table();
+        $query = "UPDATE $table SET ";
+        $where = " WHERE id = :id";
+        $values = '';
+
+        foreach ($params as $attr => $param) {
+            if ($attr === "id") {
+                continue;
+            }
+
+            $values .= "$attr = :$attr,";
+        }
+        $values = \rtrim($values, ",");
+
+        $sql = $query . $values . $where;
+
+        try {
+            $stmt = self::prepare($sql);
+            foreach ($params as $key => $param) {
+                $stmt->bindParam(":{$key}", $param['value'], $param['type']);
+            }
+            return $stmt->execute();
+
+        } catch (\PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function delete($column, $type, $value)
+    {
+        $table = $this->table();
+
+        try {
+            $sql = "DELETE FROM $table WHERE $column = :attr";
+            $stmt = self::prepare($sql);
+            $stmt->bindParam(":attr", $value, $type);
+            return $stmt->execute();
 
         } catch (\PDOException $e) {
             die($e->getMessage());

@@ -44,3 +44,6 @@ $app->router->post('/getImage', [GalleryController::class, 'getImage']);
 
 $app->router->post('/updateImageView', [GalleryController::class, 'updateImageView']);
 $app->router->post('/updateImage', [GalleryController::class, 'updateImage']);
+
+$app->router->post('/deleteImageView', [GalleryController::class, 'deleteImageView']);
+$app->router->post('/deleteImage', [GalleryController::class, 'deleteImage']);

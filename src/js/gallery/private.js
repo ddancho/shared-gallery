@@ -1,77 +1,84 @@
-import { getImagesPerPageValue } from './helpers.js';
-import { onUpdate } from './update.js';
+import { getImagesPerPageValue } from "./helpers.js";
+import { onUpdate } from "./update.js";
+import { onDelete } from "./delete.js";
 
 function onPrivate(pageAction, records, cb) {
   cb();
 
-  if (document.getElementById('view_type').disabled) {
-    document.getElementById('view_type').disabled = false;
-    document.getElementById('sort_type').disabled = false;
-    document.getElementById('img_per_page_type').disabled = false;
+  if (document.getElementById("view_type").disabled) {
+    document.getElementById("view_type").disabled = false;
+    document.getElementById("sort_type").disabled = false;
+    document.getElementById("img_per_page_type").disabled = false;
   }
 
   const { page, totalRecords } = records;
   const ipp = getImagesPerPageValue();
-  let pageDown = document.getElementById('west_arrow');
-  let pageUp = document.getElementById('east_arrow');
+  let pageDown = document.getElementById("west_arrow");
+  let pageUp = document.getElementById("east_arrow");
 
   if (page > 1) {
     pageDown
-      .closest('.nav__select-arrow-l-r')
-      .style.setProperty('visibility', 'visible');
+      .closest(".nav__select-arrow-l-r")
+      .style.setProperty("visibility", "visible");
   } else {
     pageDown
-      .closest('.nav__select-arrow-l-r')
-      .style.setProperty('visibility', 'hidden');
+      .closest(".nav__select-arrow-l-r")
+      .style.setProperty("visibility", "hidden");
   }
 
   if (page * ipp < totalRecords) {
     pageUp
-      .closest('.nav__select-arrow-l-r')
-      .style.setProperty('visibility', 'visible');
+      .closest(".nav__select-arrow-l-r")
+      .style.setProperty("visibility", "visible");
   } else {
     pageUp
-      .closest('.nav__select-arrow-l-r')
-      .style.setProperty('visibility', 'hidden');
+      .closest(".nav__select-arrow-l-r")
+      .style.setProperty("visibility", "hidden");
   }
 
-  let sort = document.getElementById('sort_type');
+  let sort = document.getElementById("sort_type");
   let options = Array.from(sort.options);
-  let option = options.find((option) => option.value === 'uploader');
+  let option = options.find((option) => option.value === "uploader");
   if (option) {
     option.remove();
   }
 
-  let imagesPublic = document.querySelectorAll('.container');
-  let imagesPrivate = document.querySelectorAll('.container__private');
-  let base = pageAction.replace('privateGallery', '');
+  let imagesPublic = document.querySelectorAll(".container");
+  let imagesPrivate = document.querySelectorAll(".container__private");
+  let base = pageAction.replace("privateGallery", "");
 
   let images = [...imagesPublic, ...imagesPrivate];
 
   images.forEach((image) => {
-    let img = image.querySelector('.card__image');
+    let img = image.querySelector(".card__image");
     if (img) {
-      let id = img.getAttribute('id');
+      let id = img.getAttribute("id");
 
       let btns = Array.from(
         image.querySelectorAll(
-          '.container__btn-submit.container__btn-submit-row'
+          ".container__btn-submit.container__btn-submit-row"
         )
       );
 
       btns.forEach((btn) => {
-        if (btn.name === 'view') {
-          btn.addEventListener('click', () => {
+        if (btn.name === "view") {
+          btn.addEventListener("click", () => {
             let tab = window.open();
-            let action = base + 'getImage';
+            let action = base + "getImage";
 
-            request(action, 'POST', id, tab);
+            request(action, "POST", id, tab);
           });
-        } else {
-          btn.addEventListener('click', () => {
-            let action = base + 'updateImageView';
+        } else if (btn.name === "edit") {
+          btn.addEventListener("click", () => {
+            let action = base + "updateImageView";
 
-            request(action, 'POST', id);
+            request(action, "POST", id);
+          });
+        } else if (btn.name === "delete") {
+          btn.addEventListener("click", () => {
+            let action = base + "deleteImageView";
+
+            request(action, "POST", id);
           });
         }
       });
@@ -87,10 +94,14 @@ const request = (action, type, id, tab = null) => {
     type,
     action,
     success: (res) => {
-      const { src, id, view } = res;
+      const { src, id, updateImg, deleteImg } = res;
 
-      if (view) {
-        onUpdate(id, view);
+      if (updateImg) {
+        onUpdate(id, updateImg);
+      }
+
+      if (deleteImg) {
+        onDelete(id, deleteImg);
       }
 
       if (src) {
