@@ -74,6 +74,21 @@ use App\Core\Application;
           <p>Upload Image</p>
         </a>
       </li>
+      <li class="nav__listitem">
+        <a
+          id="account"
+          href="javascript:void(0)"
+          action="<?php echo Application::$base; ?>/account"
+        >
+          <svg viewBox="0 0 24 24" fill="black" width="48px" height="48px">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
+            />
+          </svg>
+          <p>Account</p>
+        </a>
+      </li>
     </ul>
     <div class="nav__select">
       <div class="nav__select-container">
@@ -173,8 +188,10 @@ use App\Core\Application;
   <div id="gallery_content" class="gallery__content"></div>
 </div>
 <div class="gallery__content__modal">
-  <div id="gallery_content_modal" class="gallery__content__modal__container">
-  </div>
+  <div
+    id="gallery_content_modal"
+    class="gallery__content__modal__container"
+  ></div>
 </div>
 
 <script
@@ -222,5 +239,12 @@ use App\Core\Application;
   defer
   type="module"
   src="<?php echo Application::$js; ?>/gallery/private.js"
+  type="text/javascript"
+></script>
+
+<script
+  defer
+  type="module"
+  src="<?php echo Application::$js; ?>/gallery/account.js"
   type="text/javascript"
 ></script>

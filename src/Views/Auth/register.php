@@ -14,7 +14,7 @@ use App\Core\Application;
           class="container__form-input"
           placeholder="Enter your name"
         />
-        <p id="name_error" class="container__description-error">0</p>
+        <p id="reg_name_error" class="container__description-error">0</p>
       </div>
       <div class="container__form-group">
         <label for="email" class="container__form-label">Email</label>
@@ -24,7 +24,7 @@ use App\Core\Application;
           class="container__form-input"
           placeholder="Enter your email"
         />
-        <p id="email_error" class="container__description-error">0</p>
+        <p id="reg_email_error" class="container__description-error">0</p>
       </div>
       <div class="container__form-group">
         <label for="password" class="container__form-label">Password</label>
@@ -34,7 +34,7 @@ use App\Core\Application;
           class="container__form-input"
           placeholder="Enter your Password"
         />
-        <p id="password_error" class="container__description-error">0</p>
+        <p id="reg_password_error" class="container__description-error">0</p>
       </div>
       <div class="container__form-group">
         <label for="confirm" class="container__form-label"
@@ -46,7 +46,7 @@ use App\Core\Application;
           class="container__form-input"
           placeholder="Confirm your password"
         />
-        <p id="confirm_error" class="container__description-error">0</p>
+        <p id="reg_confirm_error" class="container__description-error">0</p>
       </div>
       <div class="container__form-group">
         <input type="submit" class="container__btn-submit" value="Submit" />

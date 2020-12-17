@@ -20,7 +20,7 @@ use App\Core\Application;
       <ul>
         <?php if (!is_null(Application::$app->session->get('user'))): ?>
           <li><a href="<?php echo Application::$base; ?>/gallery">Shared Gallery</a></li>
-          <li><p><?php echo Application::$app->session->get('user')['name'] ?></p></li>
+          <li><p id="user_name"><?php echo Application::$app->session->get('user')['name'] ?></p></li>
           <li><a id="logout" href="<?php echo Application::$base; ?>/logout">Logout</a></li>
         <?php else: ?>
           <li><a href="<?php echo Application::$base; ?>/">Shared Gallery</a></li>

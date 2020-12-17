@@ -14,7 +14,7 @@ use App\Core\Application;
           class="container__form-input"
           placeholder="Enter your email"
         />
-        <p id="email_error" class="container__description-error">0</p>
+        <p id="login_email_error" class="container__description-error">0</p>
       </div>
       <div class="container__form-group">
         <label for="password" class="container__form-label">Password</label>
@@ -24,7 +24,7 @@ use App\Core\Application;
           class="container__form-input"
           placeholder="Enter your Password"
         />
-        <p id="password_error" class="container__description-error">0</p>
+        <p id="login_password_error" class="container__description-error">0</p>
       </div>
       <div class="container__form-group-row">
           <div class="container__form-input-checkbox">

@@ -47,3 +47,6 @@ $app->router->post('/updateImage', [GalleryController::class, 'updateImage']);
 
 $app->router->post('/deleteImageView', [GalleryController::class, 'deleteImageView']);
 $app->router->post('/deleteImage', [GalleryController::class, 'deleteImage']);
+
+$app->router->get('/account', [AuthController::class, 'account']);
+$app->router->post('/account', [AuthController::class, 'account']);

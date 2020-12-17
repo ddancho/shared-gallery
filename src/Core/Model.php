@@ -43,7 +43,7 @@ abstract class Model extends DbModel
                 $value = $this->{$property};
 
                 foreach ($rules as $rule) {
-                    $ruleType = $rule; //type,error,size
+                    $ruleType = $rule;
 
                     if (\is_array($rule)) {
                         $ruleType = $rule[0];

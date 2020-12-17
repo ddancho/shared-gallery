@@ -1,6 +1,7 @@
 import { onUpload } from "./upload.js";
 import { onPublic } from "./public.js";
 import { onPrivate } from "./private.js";
+import { onAccountUpdate } from "./account.js";
 import {
   fixGalleryViewType,
   getSortByValue,
@@ -104,6 +105,13 @@ document.getElementById("upload").addEventListener("click", function (e) {
   request(action, "GET");
 });
 
+document.getElementById("account").addEventListener("click", function (e) {
+  e.preventDefault();
+
+  let action = this.getAttribute("action");
+  request(action, "GET");
+});
+
 const request = (action, type, processData = false, data = null) => {
   app.request(
     {
@@ -125,6 +133,9 @@ const request = (action, type, processData = false, data = null) => {
             break;
           case "upload":
             onUpload(action);
+            break;
+          case "account":
+            onAccountUpdate();
             break;
         }
       },

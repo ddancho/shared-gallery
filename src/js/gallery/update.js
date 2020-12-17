@@ -24,7 +24,7 @@ function onUpdate(id, view) {
     .addEventListener("submit", function (e) {
       e.preventDefault();
 
-      let form = new FormData(document.getElementById("updateForm"));
+      let form = new FormData(this);
       form.append("id", id);
       let action = this.getAttribute("action");
 
