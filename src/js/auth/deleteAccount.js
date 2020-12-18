@@ -1,6 +1,4 @@
-import { simulateMouseClick } from "./helpers.js";
-
-function onDelete(id, view) {
+var deleteAccountAction = function (view) {
   document.body.style.setProperty("overflow-y", "hidden");
 
   let modal = document.querySelector(".gallery__content__modal");
@@ -25,12 +23,13 @@ function onDelete(id, view) {
       e.preventDefault();
 
       let form = new FormData(this);
-      form.append("id", id);
       let action = this.getAttribute("action");
 
       request(action, "POST", false, form);
     });
-}
+};
+
+const redirect = (location) => (window.location = location);
 
 const request = (action, type, processData = false, data = null) => {
   app.request(
@@ -39,7 +38,7 @@ const request = (action, type, processData = false, data = null) => {
       type,
       action,
       success: (res) => {
-        const { isDeleted } = res;
+        const { isDeleted, home } = res;
 
         let delElement = document.getElementById("delete_status");
         document.querySelector(
@@ -51,23 +50,23 @@ const request = (action, type, processData = false, data = null) => {
 
         if (isDeleted) {
           delElement.style.setProperty("visibility", "visible");
-          delElement.innerHTML = "Image data deleted successfully";
+          delElement.innerHTML = "Account deleted successfully";
 
           window.setTimeout(function () {
-            onDeleteImageResponse(delElement, null);
-          }, 3 * 1000);
-
-          simulateMouseClick();
+            onDeleteAccountResponse(delElement, null);
+            redirect(home);
+          }, 2 * 1000);
         } else {
           delElement.classList.toggle("container__description-error-m");
           delElement.style.setProperty("visibility", "visible");
           delElement.innerHTML = "Error, please try later";
 
           window.setTimeout(function () {
-            onDeleteImageResponse(delElement, "container__description-error-m");
+            onDeleteAccountResponse(
+              delElement,
+              "container__description-error-m"
+            );
           }, 3 * 1000);
-
-          simulateMouseClick();
         }
       },
       error: (res) => {
@@ -78,7 +77,7 @@ const request = (action, type, processData = false, data = null) => {
   );
 };
 
-const onDeleteImageResponse = (delElement, classType) => {
+const onDeleteAccountResponse = (delElement, classType) => {
   if (classType) {
     delElement.classList.toggle(classType);
   }
@@ -100,5 +99,3 @@ const onDeleteImageResponse = (delElement, classType) => {
     .querySelector(".gallery__content__modal")
     .style.setProperty("opacity", "0");
 };
-
-export { onDelete };

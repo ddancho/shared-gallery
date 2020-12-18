@@ -1,60 +1,60 @@
-import { getImagesPerPageValue } from './helpers.js';
+import { getImagesPerPageValue } from "./helpers.js";
 
-function onPublic(orgAction, records, cb) {
+function onPublic(pageAction, records, cb) {
   cb();
 
-  if (document.getElementById('view_type').disabled) {
-    document.getElementById('view_type').disabled = false;
-    document.getElementById('sort_type').disabled = false;
-    document.getElementById('img_per_page_type').disabled = false;
+  if (document.getElementById("view_type").disabled) {
+    document.getElementById("view_type").disabled = false;
+    document.getElementById("sort_type").disabled = false;
+    document.getElementById("img_per_page_type").disabled = false;
   }
 
   const { page, totalRecords } = records;
   const ipp = getImagesPerPageValue();
-  let pageDown = document.getElementById('west_arrow');
-  let pageUp = document.getElementById('east_arrow');
+  let pageDown = document.getElementById("west_arrow");
+  let pageUp = document.getElementById("east_arrow");
 
   if (page > 1) {
     pageDown
-      .closest('.nav__select-arrow-l-r')
-      .style.setProperty('visibility', 'visible');
+      .closest(".nav__select-arrow-l-r")
+      .style.setProperty("visibility", "visible");
   } else {
     pageDown
-      .closest('.nav__select-arrow-l-r')
-      .style.setProperty('visibility', 'hidden');
+      .closest(".nav__select-arrow-l-r")
+      .style.setProperty("visibility", "hidden");
   }
 
   if (page * ipp < totalRecords) {
     pageUp
-      .closest('.nav__select-arrow-l-r')
-      .style.setProperty('visibility', 'visible');
+      .closest(".nav__select-arrow-l-r")
+      .style.setProperty("visibility", "visible");
   } else {
     pageUp
-      .closest('.nav__select-arrow-l-r')
-      .style.setProperty('visibility', 'hidden');
+      .closest(".nav__select-arrow-l-r")
+      .style.setProperty("visibility", "hidden");
   }
 
-  let sort = document.getElementById('sort_type');
+  let sort = document.getElementById("sort_type");
   let options = Array.from(sort.options);
-  let option = options.find((option) => option.value === 'uploader');
+  let option = options.find((option) => option.value === "uploader");
   if (option === undefined) {
-    sort.add(new Option('Uploader', 'uploader'));
+    sort.add(new Option("Uploader", "uploader"));
   }
 
-  let images = document.querySelectorAll('.container');
-  let action = orgAction.replace('publicGallery', 'getImage');
+  let images = document.querySelectorAll(".container");
+  let action = pageAction.replace("publicGallery", "getImage");
 
   images.forEach((image) => {
-    let img = image.querySelector('.card__image');
+    let img = image.querySelector(".card__image");
 
     if (img) {
-      let id = img.getAttribute('id');
+      let id = img.getAttribute("id");
 
-      let btn = image.querySelector('.container__btn-submit');
-      btn.addEventListener('click', () => {
+      let btn = image.querySelector(".container__btn-submit");
+      btn.addEventListener("click", () => {
         let tab = window.open();
 
-        request(action, 'POST', id, tab);
+        request(action, "POST", id, tab);
       });
     }
   });

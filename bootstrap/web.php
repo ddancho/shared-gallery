@@ -50,3 +50,6 @@ $app->router->post('/deleteImage', [GalleryController::class, 'deleteImage']);
 
 $app->router->get('/account', [AuthController::class, 'account']);
 $app->router->post('/account', [AuthController::class, 'account']);
+
+$app->router->get('/deleteAccount', [AuthController::class, 'deleteAccount']);
+$app->router->post('/deleteAccount', [AuthController::class, 'deleteAccount']);

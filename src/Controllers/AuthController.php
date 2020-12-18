@@ -12,7 +12,7 @@ class AuthController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->registerMiddleware(new AuthMiddleware(['logout', 'account'], ['register', 'login']));
+        $this->registerMiddleware(new AuthMiddleware(['logout', 'account', 'deleteAccount'], ['register', 'login']));
     }
 
     public function register($request, $response)
@@ -99,6 +99,23 @@ class AuthController extends Controller
         return $response->json([
             'page' => 'account',
             'view' => $this->renderView("Auth/account", $record),
+        ]);
+    }
+
+    public function deleteAccount($request, $response)
+    {
+        if ($request->isPost()) {
+            $user = new User('account');
+            $isDeleted = $user->deleteUser(intval($this->app()->session->get('user')['id']));
+
+            return $response->json([
+                'isDeleted' => $isDeleted,
+                'home' => Application::$base . "/",
+            ]);
+        }
+
+        return $response->json([
+            'viewDelAcc' => $this->renderView("Auth/deleteAccount", ['action' => Application::$base . '/deleteAccount']),
         ]);
     }
 }

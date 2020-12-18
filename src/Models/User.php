@@ -150,6 +150,19 @@ class User extends Model
         return false;
     }
 
+    public function deleteUser($id)
+    {
+        $response = parent::delete('id', \PDO::PARAM_INT, $id);
+
+        if ($response) {
+            Application::$app->session->remove('user');
+            Application::$app->session->remove('publicPage');
+            Application::$app->session->remove('privatePage');
+        }
+
+        return $response;
+    }
+
     private function setRules($rules)
     {
         $this->rules = [

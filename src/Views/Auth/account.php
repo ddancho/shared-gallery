@@ -50,10 +50,11 @@ echo <<<PAGE
                 />
                 <p id="acc_confirm_error" class="container__description-error">0</p>
             </div>
-            <div class="container__form-group">
-                <input type="submit" class="container__btn-submit" value="Update Account Info" />
-                <p id="acc_update_success" class="container__description-success">0</p>
+            <div class="container__form-group-row">
+                <input type="submit" class="container__btn-submit container__btn-submit-row" name="updateAcc" value="Update Account Info" />
+                <input type="submit" class="container__btn-submit container__btn-submit-row container__btn-submit-delete" name="deleteAcc" value="Delete My Account" />
             </div>
+            <p id="acc_update_success" class="container__description-success">0</p>
         </form>
     </div>
   PAGE;

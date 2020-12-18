@@ -16,6 +16,7 @@ import {
   onPageDownArrowClick,
   onPageUpArrowClick,
   onImagePerPageChange,
+  onNavListItem,
 } from "./eventControls.js";
 
 document.addEventListener("DOMContentLoaded", (e) => {
@@ -47,23 +48,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   request(action, "POST", true, { sortBy, direction, ipp, page });
 });
 
-document.querySelector(".nav__expand").addEventListener("click", () => {
-  document.querySelector(".nav").classList.toggle("nav-closed");
-});
-
-let listItems = document.querySelectorAll(".nav__listitem");
-
-listItems.forEach((item) => {
-  item.addEventListener("click", () => setItemActive(item));
-});
-
-const setItemActive = (item) => {
-  listItems.forEach((listItem) => {
-    listItem.classList.remove("nav__listitem-active");
-  });
-
-  item.classList.add("nav__listitem-active");
-};
+onNavListItem();
 
 onViewTypeChange();
 

@@ -126,7 +126,7 @@ class GalleryController extends Controller
         if ($request->isPost()) {
             return $response->json([
                 'id' => intval($request->getBody()['id']),
-                'deleteImg' => $this->renderView("Gallery/delete", ['action' => Application::$base . '/deleteImage']),
+                'deleteImg' => $this->renderView("Gallery/deleteImage", ['action' => Application::$base . '/deleteImage']),
             ]);
         }
     }

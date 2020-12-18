@@ -1,6 +1,6 @@
 import { getImagesPerPageValue } from "./helpers.js";
 import { onUpdate } from "./update.js";
-import { onDelete } from "./delete.js";
+import { onDeleteImage } from "./deleteImage.js";
 
 function onPrivate(pageAction, records, cb) {
   cb();
@@ -101,7 +101,7 @@ const request = (action, type, id, tab = null) => {
       }
 
       if (deleteImg) {
-        onDelete(id, deleteImg);
+        onDeleteImage(id, deleteImg);
       }
 
       if (src) {

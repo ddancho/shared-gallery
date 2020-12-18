@@ -202,15 +202,7 @@ use App\Core\Application;
 
 <script
   defer
-  type="module"
-  src="<?php echo Application::$js; ?>/gallery/helpers.js"
-  type="text/javascript"
-></script>
-
-<script
-  defer
-  type="module"
-  src="<?php echo Application::$js; ?>/gallery/eventControls.js"
+  src="<?php echo Application::$js; ?>/auth/deleteAccount.js"
   type="text/javascript"
 ></script>
 
@@ -218,33 +210,5 @@ use App\Core\Application;
   defer
   type="module"
   src="<?php echo Application::$js; ?>/gallery/gallery.js"
-  type="text/javascript"
-></script>
-
-<script
-  defer
-  type="module"
-  src="<?php echo Application::$js; ?>/gallery/upload.js"
-  type="text/javascript"
-></script>
-
-<script
-  defer
-  type="module"
-  src="<?php echo Application::$js; ?>/gallery/public.js"
-  type="text/javascript"
-></script>
-
-<script
-  defer
-  type="module"
-  src="<?php echo Application::$js; ?>/gallery/private.js"
-  type="text/javascript"
-></script>
-
-<script
-  defer
-  type="module"
-  src="<?php echo Application::$js; ?>/gallery/account.js"
   type="text/javascript"
 ></script>

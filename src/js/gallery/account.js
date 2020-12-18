@@ -22,16 +22,35 @@ function onAccountUpdate() {
     .getElementById("acc_update_success")
     .style.setProperty("visibility", "hidden");
 
-  document
-    .getElementById("accountform")
-    .addEventListener("submit", function (e) {
-      e.preventDefault();
+  let btns = Array.from(
+    document.querySelectorAll(
+      ".container__btn-submit.container__btn-submit-row"
+    )
+  );
 
-      let form = new FormData(this);
-      let action = this.getAttribute("action");
+  btns.forEach((btn) => {
+    if (btn.name === "updateAcc") {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
 
-      request(action, "POST", false, form);
-    });
+        let formElement = document.getElementById("accountform");
+        let form = new FormData(formElement);
+        let action = formElement.getAttribute("action");
+
+        request(action, "POST", false, form);
+      });
+    } else if (btn.name === "deleteAcc") {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        let action = document
+          .getElementById("accountform")
+          .getAttribute("action");
+        action = action.replace("account", "deleteAccount");
+
+        request(action, "GET");
+      });
+    }
+  });
 }
 
 const request = (action, type, processData = false, data = null) => {
@@ -41,7 +60,7 @@ const request = (action, type, processData = false, data = null) => {
       type,
       action,
       success: (res) => {
-        const { msg, userName, errors } = res;
+        const { msg, userName, errors, viewDelAcc } = res;
 
         if (errors) {
           Object.keys(errors).forEach((element) => {
@@ -71,6 +90,10 @@ const request = (action, type, processData = false, data = null) => {
             updateSucces.innerHTML = "";
             document.querySelector(".container__btn-submit").disabled = false;
           }, 3 * 1000);
+        }
+
+        if (viewDelAcc) {
+          deleteAccountAction(viewDelAcc);
         }
       },
       error: (res) => {
