@@ -11,6 +11,7 @@ use App\Core\Application;
         <input
           type="text"
           id="name"
+          name="name"
           class="container__form-input"
           placeholder="Enter your name"
         />
@@ -21,6 +22,7 @@ use App\Core\Application;
         <input
           type="email"
           id="email"
+          name="email"
           class="container__form-input"
           placeholder="Enter your email"
         />
@@ -31,6 +33,7 @@ use App\Core\Application;
         <input
           type="password"
           id="password"
+          name="password"
           class="container__form-input"
           placeholder="Enter your Password"
         />
@@ -43,6 +46,7 @@ use App\Core\Application;
         <input
           type="password"
           id="confirm"
+          name="confirm"
           class="container__form-input"
           placeholder="Confirm your password"
         />

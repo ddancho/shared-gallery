@@ -1,4 +1,4 @@
-document.getElementById("form").addEventListener("submit", (e) => {
+document.getElementById("form").addEventListener("submit", function (e) {
   e.preventDefault();
 
   document
@@ -11,52 +11,60 @@ document.getElementById("form").addEventListener("submit", (e) => {
     .getElementById("login_success")
     .style.setProperty("visibility", "hidden");
 
-  let form = document.getElementById("form");
-  let action = form.getAttribute("action");
+  let formData = new FormData(this);
+  let action = this.getAttribute("action");
 
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
-  let rememberMe = document.getElementById("remember_me").checked;
+  request(action, "POST", false, formData);
 
-  const redirect = (location) => (window.location = location);
-
-  app.request({
-    data: {
-      email,
-      password,
-    },
-    type: "POST",
-    action,
-    success: (res) => {
-      const { msg, location, errors } = res;
-
-      if (errors) {
-        Object.keys(errors).forEach((element) => {
-          if (element === "password" || element === "email") {
-            let elementId = "login_" + element + "_error";
-            let message = errors[element];
-
-            document
-              .getElementById(elementId)
-              .style.setProperty("visibility", "visible");
-            document.getElementById(elementId).innerText = message[0];
-          }
-        });
-      }
-
-      if (msg) {
-        document
-          .getElementById("login_success")
-          .style.setProperty("visibility", "visible");
-        document.getElementById("login_success").innerText = msg;
-        document.querySelector(".container__btn-submit").disabled = true;
-        window.setTimeout(function () {
-          redirect(location);
-        }, 2 * 1000);
-      }
-    },
-    error: (res) => {
-      alert(res);
-    },
-  });
+  //let rememberMe = document.getElementById("remember_me").checked;
 });
+
+const redirect = (location) => (window.location = location);
+
+const request = (action, type, processData = false, data = null) => {
+  app.request(
+    {
+      data,
+      type,
+      action,
+      success: (res) => {
+        const { msg, location, errors } = res;
+
+        if (errors) {
+          document.querySelector(".container__btn-submit").disabled = true;
+
+          Object.keys(errors).forEach((element) => {
+            if (element === "password" || element === "email") {
+              let elementId = "login_" + element + "_error";
+              let message = errors[element];
+
+              document
+                .getElementById(elementId)
+                .style.setProperty("visibility", "visible");
+              document.getElementById(elementId).innerText = message[0];
+            }
+          });
+
+          window.setTimeout(function () {
+            document.querySelector(".container__btn-submit").disabled = false;
+          }, 3 * 1000);
+        }
+
+        if (msg) {
+          document
+            .getElementById("login_success")
+            .style.setProperty("visibility", "visible");
+          document.getElementById("login_success").innerText = msg;
+          document.querySelector(".container__btn-submit").disabled = true;
+          window.setTimeout(function () {
+            redirect(location);
+          }, 2 * 1000);
+        }
+      },
+      error: (res) => {
+        alert(res);
+      },
+    },
+    processData
+  );
+};
