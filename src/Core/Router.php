@@ -38,11 +38,6 @@ class Router
             throw new NotFoundException();
         }
 
-        if (\is_string($callback)) {
-            // TO DO
-            // just view
-        }
-
         if (\is_array($callback) && class_exists($callback[0]) && \method_exists($callback[0], $callback[1])) {
             $this->controller = new $callback[0];
             $this->controller->action = $callback[1];

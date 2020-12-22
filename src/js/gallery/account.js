@@ -45,9 +45,9 @@ function onAccountUpdate() {
         let action = document
           .getElementById("accountform")
           .getAttribute("action");
-        action = action.replace("account", "deleteAccount");
+        action = action.replace("account", "deleteAccountView");
 
-        request(action, "GET");
+        request(action, "POST");
       });
     }
   });

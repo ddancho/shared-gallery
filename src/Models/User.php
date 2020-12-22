@@ -12,7 +12,8 @@ class User extends Model
     protected $password = '';
     protected $confirm = '';
 
-    public $record;
+    public $record = [];
+    public $rememberMe = false;
 
     private $id = null;
     private $rule = '';
@@ -39,10 +40,16 @@ class User extends Model
         $this->rule = $rule;
     }
 
-    public function login()
+    public function login($id = null)
     {
-        $this->record = $this->get('email', \PDO::PARAM_STR, $this->email, true);
-        if (!$this->record) {
+        if ($id) {
+            $this->record = parent::get('id', \PDO::PARAM_STR, $id);
+            return;
+        } else {
+            $this->record = parent::get('email', \PDO::PARAM_STR, $this->email, true);
+        }
+
+        if (empty($this->record)) {
             $this->addError('email', self::RULE_EMAIL);
             $this->addError('password', self::RULE_PASSWORD);
         }
@@ -62,11 +69,9 @@ class User extends Model
 
     public function getUser($id)
     {
-        $record = parent::get('id', \PDO::PARAM_INT, $id);
-        $record['action'] = Application::$base . '/account';
-        unset($record['password']);
-
-        return $record;
+        $this->record = parent::get('id', \PDO::PARAM_INT, $id);
+        $this->record['action'] = Application::$base . '/account';
+        unset($this->record['password']);
     }
 
     public function loadModelData($data)
@@ -95,6 +100,10 @@ class User extends Model
                 unset($this->rules['password']);
                 unset($this->rules['confirm']);
             }
+        }
+
+        if ($this->rule === 'login' && isset($data['remember_me']) && $data['remember_me'] === 'on') {
+            $this->rememberMe = true;
         }
 
         parent::loadModelData($data);

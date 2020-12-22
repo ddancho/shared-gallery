@@ -87,14 +87,14 @@ document.getElementById("upload").addEventListener("click", function (e) {
   e.preventDefault();
 
   let action = this.getAttribute("action");
-  request(action, "GET");
+  request(action, "POST");
 });
 
 document.getElementById("account").addEventListener("click", function (e) {
   e.preventDefault();
 
   let action = this.getAttribute("action");
-  request(action, "GET");
+  request(action, "POST");
 });
 
 const request = (action, type, processData = false, data = null) => {

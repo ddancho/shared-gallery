@@ -1,43 +1,44 @@
 function onUpload(action) {
-  document.getElementById('view_type').disabled = true;
-  document.getElementById('sort_type').disabled = true;
-  document.getElementById('img_per_page_type').disabled = true;
+  document.getElementById("view_type").disabled = true;
+  document.getElementById("sort_type").disabled = true;
+  document.getElementById("img_per_page_type").disabled = true;
 
   let viewColumn = Array.from(
-    document.getElementById('gallery_content').classList
-  ).find((element) => element === 'gallery__content-column');
+    document.getElementById("gallery_content").classList
+  ).find((element) => element === "gallery__content-column");
 
   if (viewColumn === undefined) {
     document
-      .getElementById('gallery_content')
-      .classList.remove('gallery__content-grid');
+      .getElementById("gallery_content")
+      .classList.remove("gallery__content-grid");
     document
-      .getElementById('gallery_content')
-      .classList.add('gallery__content-column');
+      .getElementById("gallery_content")
+      .classList.add("gallery__content-column");
   }
 
-  let uploadForm = document.getElementById('uploadForm');
-  uploadForm.setAttribute('action', action);
+  let uploadForm = document.getElementById("uploadForm");
+  action = action.replace("uploadImageView", "uploadImage");
+  uploadForm.setAttribute("action", action);
 
-  uploadForm.addEventListener('submit', function (e) {
+  uploadForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    let pbFill = document.getElementById('progress_bar_fill');
+    let pbFill = document.getElementById("progress_bar_fill");
     pbFill.style.width = 0;
-    pbFill.innerText = '';
+    pbFill.innerText = "";
 
     document
-      .getElementById('upload_success')
-      .style.setProperty('visibility', 'hidden');
+      .getElementById("upload_success")
+      .style.setProperty("visibility", "hidden");
 
     document
-      .getElementById('file_error')
-      .style.setProperty('visibility', 'hidden');
+      .getElementById("file_error")
+      .style.setProperty("visibility", "hidden");
 
-    let fileInput = document.getElementById('file');
+    let fileInput = document.getElementById("file");
 
     let formData = new FormData(this);
-    formData.append('file', fileInput.files[0]);
+    formData.append("file", fileInput.files[0]);
 
     var xmlhttp = new XMLHttpRequest();
 
@@ -50,10 +51,10 @@ function onUpload(action) {
 
           if (msg) {
             document
-              .getElementById('upload_success')
-              .style.setProperty('visibility', 'visible');
-            document.getElementById('upload_success').innerText = msg;
-            document.querySelector('.container__btn-submit').disabled = true;
+              .getElementById("upload_success")
+              .style.setProperty("visibility", "visible");
+            document.getElementById("upload_success").innerText = msg;
+            document.querySelector(".container__btn-submit").disabled = true;
             window.setTimeout(function () {
               setUploadSuccessHidden();
             }, 3 * 1000);
@@ -61,17 +62,17 @@ function onUpload(action) {
 
           if (errors) {
             Object.keys(errors).forEach((element) => {
-              let elementId = element + '_error';
+              let elementId = element + "_error";
               let message = errors[element];
 
               document
                 .getElementById(elementId)
-                .style.setProperty('visibility', 'visible');
+                .style.setProperty("visibility", "visible");
               document.getElementById(elementId).innerText = message[0];
             });
           }
         } else {
-          console.log('Ajax error');
+          console.log("Ajax error");
         }
       }
     };
@@ -81,22 +82,22 @@ function onUpload(action) {
 
       if (e.lengthComputable === true) {
         percent = Math.round((e.loaded / e.total) * 100);
-        pbFill.style.width = percent + '%';
-        pbFill.innerText = percent + '%';
+        pbFill.style.width = percent + "%";
+        pbFill.innerText = percent + "%";
       }
     };
 
-    xmlhttp.open('POST', action);
+    xmlhttp.open("POST", action);
     xmlhttp.send(formData);
   });
 }
 
 const setUploadSuccessHidden = () => {
   document
-    .getElementById('upload_success')
-    .style.setProperty('visibility', 'hidden');
-  document.getElementById('upload_success').innerText = '';
-  document.querySelector('.container__btn-submit').disabled = false;
+    .getElementById("upload_success")
+    .style.setProperty("visibility", "hidden");
+  document.getElementById("upload_success").innerText = "";
+  document.querySelector(".container__btn-submit").disabled = false;
 };
 
 export { onUpload };

@@ -9,39 +9,45 @@ class AuthMiddleware extends BaseMiddleware
 {
     private $processors = [];
 
-    public function __construct($actionsNotSet = [], $actionsSet = [])
+    public function __construct($actionsNotSet = [], $actionsSet = [], $cookieCheck = false)
     {
-        $this->processActions($actionsNotSet, $actionsSet);
+        $this->processActions($actionsNotSet, $actionsSet, $cookieCheck);
     }
 
-    private function processActions($actionsNotSet, $actionsSet)
+    private function processActions($actionsNotSet, $actionsSet, $cookieCheck)
     {
         $user = Application::$app->session->get('user');
 
-        if (!empty($actionsNotSet)) {
-            $requirement = $this->getRequirementForActions($user, null);
+        if ($cookieCheck && $user !== null) {
+            return \header('Location: ' . Application::$base . '/gallery');
+        } else if ($cookieCheck && !empty($_COOKIE['rememberMe'])) {
+            return \header('Location: ' . Application::$base . '/login');
+        } else {
 
-            $this->processors[] = [
-                $requirement => $actionsNotSet,
-            ];
+            if (!empty($actionsNotSet)) {
+                $requirement = $this->getRequirementForActions($user, null);
+
+                $this->processors[] = [
+                    $requirement => $actionsNotSet,
+                ];
+            }
+
+            if (!empty($actionsSet)) {
+                $requirement = $this->getRequirementForActions($user, true);
+
+                $this->processors[] = [
+                    $requirement => $actionsSet,
+                ];
+            }
+
+            if (empty($actionsNotSet) && empty($actionsSet)) {
+                $requirement = $this->getRequirementForActions($user, null);
+
+                $this->processors[] = [
+                    $requirement => '',
+                ];
+            }
         }
-
-        if (!empty($actionsSet)) {
-            $requirement = $this->getRequirementForActions($user, true);
-
-            $this->processors[] = [
-                $requirement => $actionsSet,
-            ];
-        }
-
-        if (empty($actionsNotSet) && empty($actionsSet)) {
-            $requirement = $this->getRequirementForActions($user, null);
-
-            $this->processors[] = [
-                $requirement => '',
-            ];
-        }
-
     }
 
     private function getRequirementForActions($user, $requirement)

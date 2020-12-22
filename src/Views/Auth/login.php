@@ -30,7 +30,7 @@ use App\Core\Application;
       </div>
       <div class="container__form-group-row">
           <div class="container__form-input-checkbox">
-              <input type="checkbox" id="remember_me">
+              <input type="checkbox" id="remember_me" name="remember_me">
           </div>
           <label for="remember_me" class="container__form-label-checkbox">Remember Me</label>
       </div>

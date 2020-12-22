@@ -51,7 +51,7 @@ use App\Core\Application;
         <a
           id="upload"
           href="javascript:void(0)"
-          action="<?php echo Application::$base; ?>/upload"
+          action="<?php echo Application::$base; ?>/uploadImageView"
         >
           <svg
             enable-background="new 0 0 24 24"
@@ -78,7 +78,7 @@ use App\Core\Application;
         <a
           id="account"
           href="javascript:void(0)"
-          action="<?php echo Application::$base; ?>/account"
+          action="<?php echo Application::$base; ?>/accountView"
         >
           <svg viewBox="0 0 24 24" fill="black" width="48px" height="48px">
             <path d="M0 0h24v24H0z" fill="none" />
