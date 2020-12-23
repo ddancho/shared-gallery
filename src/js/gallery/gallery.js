@@ -39,6 +39,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
   onPageUpArrowClick(request);
 
+  onImagePerPageChange(request);
+
   let page = 0;
   let ipp = getImagesPerPageValue();
   let sortBy = getSortByValue();
@@ -57,8 +59,6 @@ onSortTypeChange();
 onAscArrowClick();
 
 onDescArrowClick();
-
-onImagePerPageChange();
 
 document.getElementById("public").addEventListener("click", function (e) {
   e.preventDefault();

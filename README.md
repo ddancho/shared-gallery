@@ -1,1 +1,21 @@
-"# Shared Gallery"
+# Shared Gallery
+
+- install [Composer](https://getcomposer.org/)
+- install [Xampp](https://www.apachefriends.org/index.html)
+- clone repository into htdocs folder
+- add .env file in the root with the following environment variables
+  - BASE : absolute path to the /public folder
+  - ASSETS : relative path to the /assets folder
+  - JS : relative path to the /js folder
+  - DB_DSN : your mysql dsn value
+  - DB_USER : your mysql user value
+  - DB_PASSWORD : your mysql password value
+- open command prompt in the root folder, write
+  - composer install , to install the project dependencies
+  - composer dumpautoload -o , to dump the autoloader
+- start Apache and MySQL from xampp-control.exe
+- create database from phpmyadmin
+- apply migrations
+  - open command prompt in the root folder, write
+  - php migration.php
+- navigate to public folder, register, login, etc

@@ -93,13 +93,21 @@ function onPageUpArrowClick(cb) {
   });
 }
 
-function onImagePerPageChange() {
+function onImagePerPageChange(cb) {
   document
     .getElementById("img_per_page_type")
     .addEventListener("change", function (e) {
       e.preventDefault();
 
-      simulateMouseClick();
+      let aElement = document.querySelector(".nav__listitem-active a");
+      let action = aElement.getAttribute("action");
+
+      let page = 0;
+      let ipp = getImagesPerPageValue();
+      let sortBy = getSortByValue();
+      let direction = getSortByDirection();
+
+      cb(action, "POST", true, { sortBy, direction, ipp, page });
     });
 }
 
